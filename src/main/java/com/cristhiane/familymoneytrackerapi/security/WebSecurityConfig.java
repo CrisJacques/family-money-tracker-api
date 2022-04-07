@@ -51,26 +51,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    /*http.cors().and().csrf().disable()
+    http.cors().and().csrf().disable()
       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .authorizeRequests().antMatchers("/api/auth/**").permitAll()
       .antMatchers("/api/test/**").permitAll()
       .antMatchers(h2ConsolePath + "/**").permitAll()
-      .anyRequest().authenticated();*/
-	  
-	  http.authorizeRequests().antMatchers("/").permitAll()
-      .and()
-      .authorizeRequests().antMatchers("/h2-ui/**").permitAll()
-      .and()
-      .headers().frameOptions().disable()
-      .and()
-      .csrf().ignoringAntMatchers("/h2-ui/**")
-      .and()
-      .cors().disable();
+      .anyRequest().authenticated();
     
     // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
-    //http.headers().frameOptions().disable();
-    //http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.headers().frameOptions().sameOrigin();
+    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 }
