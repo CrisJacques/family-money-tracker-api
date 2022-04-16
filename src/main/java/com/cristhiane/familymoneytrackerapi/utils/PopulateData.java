@@ -28,22 +28,17 @@ public class PopulateData {
 	
 	@PostConstruct
 	public void insertData() {
-		Role role_moderator = new Role(ERole.ROLE_MODERATOR);
-		Role role_user = new Role(ERole.ROLE_USER);
-		Role role_admin = new Role(ERole.ROLE_ADMIN);
+		Role role_group_user = new Role(ERole.ROLE_GROUP_USER);
+		Role role_group_admin = new Role(ERole.ROLE_GROUP_ADMIN);
 
-		User user_admin = new User("admin", "admin@teste.com", encoder.encode("12345678"));
-		user_admin.getRoles().add(role_admin);
+		User group_admin = new User("group_admin", "group_admin@teste.com", encoder.encode("Gr0up@adm1n_T3st3"));
+		group_admin.getRoles().add(role_group_admin);
 		
-		User user_mod = new User("mod", "mod@teste.com", encoder.encode("12345678"));
-		user_mod.getRoles().add(role_user);
-		user_mod.getRoles().add(role_moderator);
+		User group_user = new User("group_user", "group_user@teste.com", encoder.encode("Gr0upUs3r_T3st3"));
+		group_user.getRoles().add(role_group_user);
 		
-		User user_normal = new User("normal_user", "normal_user@teste.com", encoder.encode("12345678"));
-		user_normal.getRoles().add(role_user);
-		
-		roleRepository.saveAll(Arrays.asList(role_moderator, role_user, role_admin));
-		userRepository.saveAll(Arrays.asList(user_admin, user_mod, user_normal));
+		roleRepository.saveAll(Arrays.asList(role_group_user, role_group_admin));
+		userRepository.saveAll(Arrays.asList(group_admin, group_user));
 		
 	}
 	
