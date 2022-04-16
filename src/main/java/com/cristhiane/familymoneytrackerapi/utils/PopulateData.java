@@ -28,8 +28,8 @@ public class PopulateData {
 	
 	@PostConstruct
 	public void insertData() {
-		Role role_group_user = new Role(ERole.ROLE_GROUP_USER);
-		Role role_group_admin = new Role(ERole.ROLE_GROUP_ADMIN);
+		Role role_group_user = new Role(ERole.USUARIO_COMUM);
+		Role role_group_admin = new Role(ERole.ADMIN_GRUPO);
 
 		User group_admin = new User("group_admin", "group_admin@teste.com", encoder.encode("Gr0up@adm1n_T3st3"));
 		group_admin.getRoles().add(role_group_admin);
