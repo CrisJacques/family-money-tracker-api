@@ -11,25 +11,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.cristhiane.familymoneytrackerapi.domain.CategoriaTransacao;
-import com.cristhiane.familymoneytrackerapi.service.CategoriaTransacaoService;
+import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
+import com.cristhiane.familymoneytrackerapi.service.CategoriaReceitaService;
 
 @RestController
-@RequestMapping(value = "/api/categoriasTransacoes")
-public class CategoriaTransacaoController {
+@RequestMapping(value = "/api/categorias-receitas")
+public class CategoriaReceitaController {
 	
 	@Autowired
-	CategoriaTransacaoService service;
+	CategoriaReceitaService service;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id){
-		CategoriaTransacao obj = service.find(id);
+		CategoriaReceita obj = service.find(id);
 		
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> insert(@RequestBody CategoriaTransacao obj){
+	public ResponseEntity<?> insert(@RequestBody CategoriaReceita obj){
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();// criando URI para o recurso recém criado
 		
@@ -37,7 +37,7 @@ public class CategoriaTransacaoController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody CategoriaTransacao obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@RequestBody CategoriaReceita obj, @PathVariable Integer id){
 		obj.setId(id);
 		obj = service.update(obj);
 		

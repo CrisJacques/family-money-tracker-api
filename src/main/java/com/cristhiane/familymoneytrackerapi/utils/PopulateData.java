@@ -12,9 +12,9 @@ import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
-import com.cristhiane.familymoneytrackerapi.enums.TipoTransacao;
 import com.cristhiane.familymoneytrackerapi.enums.TipoUsuario;
-import com.cristhiane.familymoneytrackerapi.repository.CategoriaTransacaoRepository;
+import com.cristhiane.familymoneytrackerapi.repository.CategoriaDespesaRepository;
+import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
 import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
 
@@ -30,7 +30,10 @@ public class PopulateData {
 	PasswordEncoder encoder;
 	
 	@Autowired
-	CategoriaTransacaoRepository categoriaTransacaoRepository;
+	CategoriaDespesaRepository categoriaDespesaRepository;
+	
+	@Autowired
+	CategoriaReceitaRepository categoriaReceitaRepository;
 	
 	@PostConstruct
 	public void insertData() {
@@ -51,25 +54,25 @@ public class PopulateData {
 		
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de despesas
-		CategoriaDespesa supermercado = new CategoriaDespesa(null, "Supermercado", "Gastos com supermercado", TipoTransacao.DESPESA, 5000);
-		CategoriaDespesa saude = new CategoriaDespesa(null, "Saúde", "Gastos com remédios e consultas", TipoTransacao.DESPESA, 2000);
-		CategoriaDespesa lazer = new CategoriaDespesa(null, "Lazer", "Entretenimento, passeios, viagens, etc", TipoTransacao.DESPESA, 1000);
-		CategoriaDespesa contas = new CategoriaDespesa(null, "Contas", "Contas fixas, como água, telefone, internet, etc", TipoTransacao.DESPESA, 2500);
-		CategoriaDespesa transporte = new CategoriaDespesa(null, "Transporte", "Gasolina, corridas por aplicativo, etc", TipoTransacao.DESPESA, 1200);
-		CategoriaDespesa vestuario = new CategoriaDespesa(null, "Vestuário", "Gastos com roupas", TipoTransacao.DESPESA, 500);
-		CategoriaDespesa artigosLar = new CategoriaDespesa(null, "Artigos para o lar", "Artigos de cama, mesa e banho", TipoTransacao.DESPESA, 700);
+		CategoriaDespesa supermercado = new CategoriaDespesa(null, "Supermercado", "Gastos com supermercado", 5000);
+		CategoriaDespesa saude = new CategoriaDespesa(null, "Saúde", "Gastos com remédios e consultas", 2000);
+		CategoriaDespesa lazer = new CategoriaDespesa(null, "Lazer", "Entretenimento, passeios, viagens, etc", 1000);
+		CategoriaDespesa contas = new CategoriaDespesa(null, "Contas", "Contas fixas, como água, telefone, internet, etc", 2500);
+		CategoriaDespesa transporte = new CategoriaDespesa(null, "Transporte", "Gasolina, corridas por aplicativo, etc", 1200);
+		CategoriaDespesa vestuario = new CategoriaDespesa(null, "Vestuário", "Gastos com roupas", 500);
+		CategoriaDespesa artigosLar = new CategoriaDespesa(null, "Artigos para o lar", "Artigos de cama, mesa e banho", 700);
 		
 		// Salvando categorias de despesas no banco de dados
-		categoriaTransacaoRepository.saveAll(Arrays.asList(supermercado, saude, lazer, contas, transporte, vestuario, artigosLar));
+		categoriaDespesaRepository.saveAll(Arrays.asList(supermercado, saude, lazer, contas, transporte, vestuario, artigosLar));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de receitas
-		CategoriaReceita salario = new CategoriaReceita(null, "Salário", "Salário do mês", TipoTransacao.RECEITA);
-		CategoriaReceita rendaExtra = new CategoriaReceita(null, "Renda Extra", "Ganhos além do salário mensal", TipoTransacao.RECEITA);
-		CategoriaReceita rendimentoInvestimento = new CategoriaReceita(null, "Rendimento investimento", "Rendimentos provenientes de investimentos", TipoTransacao.RECEITA);
+		CategoriaReceita salario = new CategoriaReceita(null, "Salário", "Salário do mês");
+		CategoriaReceita rendaExtra = new CategoriaReceita(null, "Renda Extra", "Ganhos além do salário mensal");
+		CategoriaReceita rendimentoInvestimento = new CategoriaReceita(null, "Rendimento investimento", "Rendimentos provenientes de investimentos");
 		
 		// Salvando categorias de receitas no banco de dados
-		categoriaTransacaoRepository.saveAll(Arrays.asList(salario, rendaExtra, rendimentoInvestimento));
+		categoriaReceitaRepository.saveAll(Arrays.asList(salario, rendaExtra, rendimentoInvestimento));
 	}
 	
 }

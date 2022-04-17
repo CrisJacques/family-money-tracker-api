@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import com.cristhiane.familymoneytrackerapi.enums.TipoTransacao;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class CategoriaTransacao implements Serializable {
@@ -22,18 +20,16 @@ public abstract class CategoriaTransacao implements Serializable {
 	private Integer id;
 	private String nome;
 	private String descricao;
-	private TipoTransacao tipoTransacao;
 	
 	public CategoriaTransacao() {
 		
 	}
 
-	public CategoriaTransacao(Integer id, String nome, String descricao, TipoTransacao tipoTransacao) {
+	public CategoriaTransacao(Integer id, String nome, String descricao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.tipoTransacao = tipoTransacao;
 	}
 
 	public Integer getId() {
@@ -58,14 +54,6 @@ public abstract class CategoriaTransacao implements Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public TipoTransacao getTipoTransacao() {
-		return tipoTransacao;
-	}
-
-	public void setTipoTransacao(TipoTransacao tipoTransacao) {
-		this.tipoTransacao = tipoTransacao;
 	}
 
 	@Override
