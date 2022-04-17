@@ -10,11 +10,14 @@ import org.springframework.stereotype.Component;
 
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
+import com.cristhiane.familymoneytrackerapi.domain.Conta;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
+import com.cristhiane.familymoneytrackerapi.enums.TipoConta;
 import com.cristhiane.familymoneytrackerapi.enums.TipoUsuario;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaDespesaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepository;
+import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
 import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
 
@@ -34,6 +37,9 @@ public class PopulateData {
 	
 	@Autowired
 	CategoriaReceitaRepository categoriaReceitaRepository;
+	
+	@Autowired
+	ContaRepository contaRepository;
 	
 	@PostConstruct
 	public void insertData() {
@@ -73,6 +79,14 @@ public class PopulateData {
 		
 		// Salvando categorias de receitas no banco de dados
 		categoriaReceitaRepository.saveAll(Arrays.asList(salario, rendaExtra, rendimentoInvestimento));
+		
+		//-------------------------------------------------------------------------
+		// Inserindo contas
+		Conta poupanca = new Conta(null, "Poupança da família", 5000, TipoConta.CONTA_POUPANCA);
+		Conta dinheiro = new Conta(null, "Dinheiro em casa", 150, TipoConta.DINHEIRO);
+		Conta mesada = new Conta(null, "Mesada das crianças", 75, TipoConta.MESADA);
+		
+		contaRepository.saveAll(Arrays.asList(poupanca, dinheiro, mesada));
 	}
 	
 }
