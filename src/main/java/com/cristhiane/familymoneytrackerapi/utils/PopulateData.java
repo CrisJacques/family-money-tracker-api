@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.cristhiane.familymoneytrackerapi.domain.CartaoDeCredito;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Conta;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
+import com.cristhiane.familymoneytrackerapi.enums.BandeiraCartaoDeCredito;
 import com.cristhiane.familymoneytrackerapi.enums.TipoConta;
 import com.cristhiane.familymoneytrackerapi.enums.TipoUsuario;
+import com.cristhiane.familymoneytrackerapi.repository.CartaoDeCreditoRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaDespesaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
@@ -40,6 +43,9 @@ public class PopulateData {
 	
 	@Autowired
 	ContaRepository contaRepository;
+	
+	@Autowired
+	CartaoDeCreditoRepository cartaoDeCreditoRepository;
 	
 	@PostConstruct
 	public void insertData() {
@@ -87,6 +93,14 @@ public class PopulateData {
 		Conta mesada = new Conta(null, "Mesada das crianças", 75, TipoConta.MESADA);
 		
 		contaRepository.saveAll(Arrays.asList(poupanca, dinheiro, mesada));
+		
+		//-------------------------------------------------------------------------
+		// Inserindo cartões de crédito
+		CartaoDeCredito nubank = new CartaoDeCredito(null, "Nubank", BandeiraCartaoDeCredito.MASTERCARD, 5000, 13, 20);
+		CartaoDeCredito bb = new CartaoDeCredito(null, "Banco do Brasil", BandeiraCartaoDeCredito.VISA, 2500, 11, 17);
+		CartaoDeCredito santander = new CartaoDeCredito(null, "Santander", BandeiraCartaoDeCredito.ELO, 3200, 15, 25);
+		
+		cartaoDeCreditoRepository.saveAll(Arrays.asList(nubank, bb, santander));
 	}
 	
 }
