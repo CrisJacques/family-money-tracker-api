@@ -1,6 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.service.CategoriaReceitaService;
 
@@ -49,5 +51,11 @@ public class CategoriaReceitaController {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build();// retorna status code 204
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaReceita>> findAll() {
+		List<CategoriaReceita> list = service.findAll(); 
+		return ResponseEntity.ok().body(list);
 	}
 }

@@ -1,5 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,10 @@ public class CategoriaDespesaService {
 		} catch (DataIntegrityViolationException e) {// Exceção lançada se a exclusão do objeto afetar a integridade de dados do banco
 			throw new DataIntegrityException("Categoria de despesa não pode ser deletada!");
 		}
+	}
+	
+	public List<CategoriaDespesa> findAll() {
+		return repo.findAll();
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,10 @@ public class CategoriaReceitaService {
 		} catch (DataIntegrityViolationException e) {// Exceção lançada se a exclusão do objeto afetar a integridade de dados do banco
 			throw new DataIntegrityException("Categoria de receita não pode ser deletada!");
 		}
+	}
+	
+	public List<CategoriaReceita> findAll() {
+		return repo.findAll();
 	}
 
 }
