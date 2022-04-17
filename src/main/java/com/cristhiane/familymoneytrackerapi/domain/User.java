@@ -1,4 +1,4 @@
-package com.cristhiane.familymoneytrackerapi.models;
+package com.cristhiane.familymoneytrackerapi.domain;
 
 import java.util.HashSet;
 import java.util.Set;
