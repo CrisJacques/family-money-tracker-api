@@ -1,6 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.utils;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -12,6 +13,7 @@ import com.cristhiane.familymoneytrackerapi.domain.CartaoDeCredito;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Conta;
+import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
 import com.cristhiane.familymoneytrackerapi.enums.BandeiraCartaoDeCredito;
@@ -21,6 +23,7 @@ import com.cristhiane.familymoneytrackerapi.repository.CartaoDeCreditoRepository
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaDespesaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
+import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
 import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
 
@@ -47,6 +50,9 @@ public class PopulateData {
 	@Autowired
 	CartaoDeCreditoRepository cartaoDeCreditoRepository;
 	
+	@Autowired
+	ReceitaRepository receitaRepository;
+	
 	@PostConstruct
 	public void insertData() {
 		// Inserindo perfis de usuário
@@ -66,41 +72,48 @@ public class PopulateData {
 		
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de despesas
-		CategoriaDespesa supermercado = new CategoriaDespesa(null, "Supermercado", "Gastos com supermercado", 5000);
-		CategoriaDespesa saude = new CategoriaDespesa(null, "Saúde", "Gastos com remédios e consultas", 2000);
-		CategoriaDespesa lazer = new CategoriaDespesa(null, "Lazer", "Entretenimento, passeios, viagens, etc", 1000);
-		CategoriaDespesa contas = new CategoriaDespesa(null, "Contas", "Contas fixas, como água, telefone, internet, etc", 2500);
-		CategoriaDespesa transporte = new CategoriaDespesa(null, "Transporte", "Gasolina, corridas por aplicativo, etc", 1200);
-		CategoriaDespesa vestuario = new CategoriaDespesa(null, "Vestuário", "Gastos com roupas", 500);
-		CategoriaDespesa artigosLar = new CategoriaDespesa(null, "Artigos para o lar", "Artigos de cama, mesa e banho", 700);
+		CategoriaDespesa supermercado = new CategoriaDespesa(null, "Supermercado", "Gastos com supermercado", 5000, group_admin);
+		CategoriaDespesa saude = new CategoriaDespesa(null, "Saúde", "Gastos com remédios e consultas", 2000, group_admin);
+		CategoriaDespesa lazer = new CategoriaDespesa(null, "Lazer", "Entretenimento, passeios, viagens, etc", 1000, group_admin);
+		CategoriaDespesa contas = new CategoriaDespesa(null, "Contas", "Contas fixas, como água, telefone, internet, etc", 2500, group_admin);
+		CategoriaDespesa transporte = new CategoriaDespesa(null, "Transporte", "Gasolina, corridas por aplicativo, etc", 1200, group_admin);
+		CategoriaDespesa vestuario = new CategoriaDespesa(null, "Vestuário", "Gastos com roupas", 500, group_admin);
+		CategoriaDespesa artigosLar = new CategoriaDespesa(null, "Artigos para o lar", "Artigos de cama, mesa e banho", 700, group_admin);
 		
 		// Salvando categorias de despesas no banco de dados
 		categoriaDespesaRepository.saveAll(Arrays.asList(supermercado, saude, lazer, contas, transporte, vestuario, artigosLar));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de receitas
-		CategoriaReceita salario = new CategoriaReceita(null, "Salário", "Salário do mês");
-		CategoriaReceita rendaExtra = new CategoriaReceita(null, "Renda Extra", "Ganhos além do salário mensal");
-		CategoriaReceita rendimentoInvestimento = new CategoriaReceita(null, "Rendimento investimento", "Rendimentos provenientes de investimentos");
+		CategoriaReceita salario = new CategoriaReceita(null, "Salário", "Salário do mês", group_admin);
+		CategoriaReceita rendaExtra = new CategoriaReceita(null, "Renda Extra", "Ganhos além do salário mensal", group_admin);
+		CategoriaReceita rendimentoInvestimento = new CategoriaReceita(null, "Rendimento investimento", "Rendimentos provenientes de investimentos", group_admin);
 		
 		// Salvando categorias de receitas no banco de dados
 		categoriaReceitaRepository.saveAll(Arrays.asList(salario, rendaExtra, rendimentoInvestimento));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo contas
-		Conta poupanca = new Conta(null, "Poupança da família", 5000, TipoConta.CONTA_POUPANCA);
-		Conta dinheiro = new Conta(null, "Dinheiro em casa", 150, TipoConta.DINHEIRO);
-		Conta mesada = new Conta(null, "Mesada das crianças", 75, TipoConta.MESADA);
+		Conta conta_familia = new Conta(null, "Conta da família", 5000, TipoConta.CONTA_CORRENTE, group_admin);
+		Conta poupanca_familia = new Conta(null, "Poupança da família", 10000, TipoConta.CONTA_POUPANCA, group_admin);
+		Conta dinheiro = new Conta(null, "Dinheiro em casa", 150, TipoConta.DINHEIRO, group_admin);
+		Conta mesada = new Conta(null, "Mesada das crianças", 75, TipoConta.MESADA, group_admin);
 		
-		contaRepository.saveAll(Arrays.asList(poupanca, dinheiro, mesada));
+		contaRepository.saveAll(Arrays.asList(conta_familia, poupanca_familia, dinheiro, mesada));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo cartões de crédito
-		CartaoDeCredito nubank = new CartaoDeCredito(null, "Nubank", BandeiraCartaoDeCredito.MASTERCARD, 5000, 13, 20);
-		CartaoDeCredito bb = new CartaoDeCredito(null, "Banco do Brasil", BandeiraCartaoDeCredito.VISA, 2500, 11, 17);
-		CartaoDeCredito santander = new CartaoDeCredito(null, "Santander", BandeiraCartaoDeCredito.ELO, 3200, 15, 25);
+		CartaoDeCredito nubank = new CartaoDeCredito(null, "Nubank", BandeiraCartaoDeCredito.MASTERCARD, 5000, 13, 20, group_admin);
+		CartaoDeCredito bb = new CartaoDeCredito(null, "Banco do Brasil", BandeiraCartaoDeCredito.VISA, 2500, 11, 17, group_admin);
+		CartaoDeCredito santander = new CartaoDeCredito(null, "Santander", BandeiraCartaoDeCredito.ELO, 3200, 15, 25, group_admin);
 		
 		cartaoDeCreditoRepository.saveAll(Arrays.asList(nubank, bb, santander));
+		
+		//-------------------------------------------------------------------------
+		// Inserindo receitas
+		Receita salarioMesAbril = new Receita(null, 2000, "Salário do mês de Abril", new Date(2022, 04, 15), false, null, conta_familia, salario, group_admin);
+		
+		receitaRepository.saveAll(Arrays.asList(salarioMesAbril));
 	}
 	
 }

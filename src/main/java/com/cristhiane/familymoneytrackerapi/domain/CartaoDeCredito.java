@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.cristhiane.familymoneytrackerapi.enums.BandeiraCartaoDeCredito;
 
@@ -24,12 +26,16 @@ public class CartaoDeCredito implements Serializable {
 	private Integer diaFechamentoFatura;
 	private Integer diaVencimentoFatura;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private User user;
+	
 	public CartaoDeCredito() {
 		
 	}
 
 	public CartaoDeCredito(Integer id, String nome, BandeiraCartaoDeCredito bandeiraCartaoDeCredito, float limite,
-			Integer diaFechamentoFatura, Integer diaVencimentoFatura) {
+			Integer diaFechamentoFatura, Integer diaVencimentoFatura, User user) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -37,6 +43,7 @@ public class CartaoDeCredito implements Serializable {
 		this.limite = limite;
 		this.diaFechamentoFatura = diaFechamentoFatura;
 		this.diaVencimentoFatura = diaVencimentoFatura;
+		this.user = user;
 	}
 
 	public Integer getId() {
@@ -85,6 +92,14 @@ public class CartaoDeCredito implements Serializable {
 
 	public void setDiaVencimentoFatura(Integer diaVencimentoFatura) {
 		this.diaVencimentoFatura = diaVencimentoFatura;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
