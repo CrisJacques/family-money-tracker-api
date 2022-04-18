@@ -3,6 +3,7 @@ package com.cristhiane.familymoneytrackerapi.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -14,16 +15,19 @@ import com.cristhiane.familymoneytrackerapi.domain.CartaoDeCredito;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Conta;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
 import com.cristhiane.familymoneytrackerapi.enums.BandeiraCartaoDeCredito;
+import com.cristhiane.familymoneytrackerapi.enums.FormaDePagamento;
 import com.cristhiane.familymoneytrackerapi.enums.TipoConta;
 import com.cristhiane.familymoneytrackerapi.enums.TipoUsuario;
 import com.cristhiane.familymoneytrackerapi.repository.CartaoDeCreditoRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaDespesaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
+import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
 import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
@@ -54,6 +58,9 @@ public class PopulateData {
 	@Autowired
 	ReceitaRepository receitaRepository;
 	
+	@Autowired
+	DespesaDebitoDinheiroRepository despesaDebitoDinheiroRepository;
+	
 	@PostConstruct
 	public void insertData() throws ParseException {
 		// Inserindo perfis de usuário
@@ -74,6 +81,7 @@ public class PopulateData {
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de despesas
 		CategoriaDespesa supermercado = new CategoriaDespesa(null, "Supermercado", "Gastos com supermercado", 5000, group_admin);
+		CategoriaDespesa refeicoes = new CategoriaDespesa(null, "Refeições", "Refeições fora de casa", 1500, group_admin);
 		CategoriaDespesa saude = new CategoriaDespesa(null, "Saúde", "Gastos com remédios e consultas", 2000, group_admin);
 		CategoriaDespesa lazer = new CategoriaDespesa(null, "Lazer", "Entretenimento, passeios, viagens, etc", 1000, group_admin);
 		CategoriaDespesa contas = new CategoriaDespesa(null, "Contas", "Contas fixas, como água, telefone, internet, etc", 2500, group_admin);
@@ -82,7 +90,7 @@ public class PopulateData {
 		CategoriaDespesa artigosLar = new CategoriaDespesa(null, "Artigos para o lar", "Artigos de cama, mesa e banho", 700, group_admin);
 		
 		// Salvando categorias de despesas no banco de dados
-		categoriaDespesaRepository.saveAll(Arrays.asList(supermercado, saude, lazer, contas, transporte, vestuario, artigosLar));
+		categoriaDespesaRepository.saveAll(Arrays.asList(supermercado, refeicoes, saude, lazer, contas, transporte, vestuario, artigosLar));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de receitas
@@ -117,6 +125,16 @@ public class PopulateData {
 		Receita salarioMesAbril = new Receita(null, 2000, "Salário do mês de Abril", sdf.parse("15/04/2022"), false, null, conta_familia, salario, group_admin);
 		Receita mesadaMesAbril = new Receita(null, 150, "Mesada do mês de Abril", sdf.parse("11/04/2022"), false, null, mesada, rendaExtra, group_admin);
 		receitaRepository.saveAll(Arrays.asList(salarioMesAbril, mesadaMesAbril));
+		
+		//-------------------------------------------------------------------------
+		// Inserindo despesas em débito e dinheiro
+		DespesaDebitoDinheiro almoco = new DespesaDebitoDinheiro(null, 50, "Almoço do dia", sdf.parse("08/04/2022"), false, null, FormaDePagamento.DEBITO, refeicoes, group_admin, conta_familia );
+		DespesaDebitoDinheiro jantar = new DespesaDebitoDinheiro(null, 45, "Jantar do dia", sdf.parse("08/04/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, conta_familia);
+		DespesaDebitoDinheiro lanche_tarde = new DespesaDebitoDinheiro(null, 15, "Lanche da tarde", sdf.parse("07/04/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, mesada);
+		DespesaDebitoDinheiro supermercado_compras = new DespesaDebitoDinheiro(null, 250, "Compras no supermercado", sdf.parse("05/04/2022"), false, null, FormaDePagamento.DINHEIRO, supermercado, group_admin, dinheiro);
+		
+		despesaDebitoDinheiroRepository.saveAll(Arrays.asList(almoco, jantar, lanche_tarde, supermercado_compras));
+
 	}
 	
 }

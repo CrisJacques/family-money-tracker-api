@@ -13,7 +13,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Transacao implements Serializable {
+public abstract class Transacao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

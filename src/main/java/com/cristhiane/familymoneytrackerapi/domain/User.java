@@ -53,6 +53,10 @@ public class User {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
+	private List<Despesa> despesas = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
 	private List<CategoriaDespesa> categoriasDespesa = new ArrayList<>();
 	
 	@JsonIgnore
@@ -154,6 +158,14 @@ public class User {
 
 	public void setCartoesDeCredito(List<CartaoDeCredito> cartoesDeCredito) {
 		this.cartoesDeCredito = cartoesDeCredito;
+	}
+
+	public List<Despesa> getDespesas() {
+		return despesas;
+	}
+
+	public void setDespesas(List<Despesa> despesas) {
+		this.despesas = despesas;
 	}
 
 }

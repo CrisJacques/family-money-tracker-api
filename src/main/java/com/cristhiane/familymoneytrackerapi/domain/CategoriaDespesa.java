@@ -1,8 +1,14 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class CategoriaDespesa extends CategoriaTransacao {
@@ -12,6 +18,10 @@ public class CategoriaDespesa extends CategoriaTransacao {
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private User user;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "categoriaDespesa")
+	private List<Despesa> despesas = new ArrayList<>();
 	
 	public CategoriaDespesa() {
 		
@@ -37,7 +47,14 @@ public class CategoriaDespesa extends CategoriaTransacao {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Despesa> getDespesas() {
+		return despesas;
+	}
+
+	public void setDespesas(List<Despesa> despesas) {
+		this.despesas = despesas;
 	}	
-	
 	
 }

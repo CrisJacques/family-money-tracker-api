@@ -37,6 +37,10 @@ public class Conta implements Serializable {
 	@JoinColumn(name = "id_usuario")
 	private User user;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "conta")
+	private List<DespesaDebitoDinheiro> despesasDebitoDinheiro = new ArrayList<>();
+	
 	public Conta() {
 		
 	}
@@ -96,6 +100,14 @@ public class Conta implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<DespesaDebitoDinheiro> getDespesasDebitoDinheiro() {
+		return despesasDebitoDinheiro;
+	}
+
+	public void setDespesasDebitoDinheiro(List<DespesaDebitoDinheiro> despesasDebitoDinheiro) {
+		this.despesasDebitoDinheiro = despesasDebitoDinheiro;
 	}
 
 	@Override
