@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Receita extends Transacao {
 
@@ -17,7 +15,6 @@ public class Receita extends Transacao {
 	@JoinColumn(name = "id_conta")
 	private Conta conta;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_categoria_receita")
 	private CategoriaReceita categoriaReceita;

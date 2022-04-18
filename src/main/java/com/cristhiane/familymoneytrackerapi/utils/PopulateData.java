@@ -1,7 +1,8 @@
 package com.cristhiane.familymoneytrackerapi.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -54,7 +55,7 @@ public class PopulateData {
 	ReceitaRepository receitaRepository;
 	
 	@PostConstruct
-	public void insertData() {
+	public void insertData() throws ParseException {
 		// Inserindo perfis de usuário
 		Role role_group_user = new Role(TipoUsuario.USUARIO_COMUM);
 		Role role_group_admin = new Role(TipoUsuario.ADMIN_GRUPO);
@@ -111,9 +112,11 @@ public class PopulateData {
 		
 		//-------------------------------------------------------------------------
 		// Inserindo receitas
-		Receita salarioMesAbril = new Receita(null, 2000, "Salário do mês de Abril", new Date(2022, 04, 15), false, null, conta_familia, salario, group_admin);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		receitaRepository.saveAll(Arrays.asList(salarioMesAbril));
+		Receita salarioMesAbril = new Receita(null, 2000, "Salário do mês de Abril", sdf.parse("15/04/2022"), false, null, conta_familia, salario, group_admin);
+		Receita mesadaMesAbril = new Receita(null, 150, "Mesada do mês de Abril", sdf.parse("11/04/2022"), false, null, mesada, rendaExtra, group_admin);
+		receitaRepository.saveAll(Arrays.asList(salarioMesAbril, mesadaMesAbril));
 	}
 	
 }
