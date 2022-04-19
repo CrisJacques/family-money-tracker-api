@@ -15,6 +15,7 @@ import com.cristhiane.familymoneytrackerapi.domain.CartaoDeCredito;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Conta;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaCredito;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
@@ -27,6 +28,7 @@ import com.cristhiane.familymoneytrackerapi.repository.CartaoDeCreditoRepository
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaDespesaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
+import com.cristhiane.familymoneytrackerapi.repository.DespesaCreditoRepository;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
@@ -60,6 +62,9 @@ public class PopulateData {
 	
 	@Autowired
 	DespesaDebitoDinheiroRepository despesaDebitoDinheiroRepository;
+	
+	@Autowired
+	DespesaCreditoRepository despesaCreditoRepository;
 	
 	@PostConstruct
 	public void insertData() throws ParseException {
@@ -135,6 +140,13 @@ public class PopulateData {
 		
 		despesaDebitoDinheiroRepository.saveAll(Arrays.asList(almoco, jantar, lanche_tarde, supermercado_compras));
 
+		//-------------------------------------------------------------------------
+		// Inserindo despesas no crédito
+		DespesaCredito maquinaLavar = new DespesaCredito(null, 2500, "Máquina de lavar roupa", sdf.parse("02/04/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, artigosLar, group_admin, 12, nubank );
+		DespesaCredito viagemPraia = new DespesaCredito(null, 5000, "Viagem para a praia", sdf.parse("15/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, lazer, group_admin, 24, bb );
+		DespesaCredito roupas = new DespesaCredito(null, 1200, "Roupas para as crianças", sdf.parse("02/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, vestuario, group_admin, 15, santander );
+		
+		despesaCreditoRepository.saveAll(Arrays.asList(maquinaLavar, viagemPraia, roupas));
 	}
 	
 }

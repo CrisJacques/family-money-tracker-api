@@ -1,6 +1,8 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -9,8 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.cristhiane.familymoneytrackerapi.enums.BandeiraCartaoDeCredito;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class CartaoDeCredito implements Serializable {
@@ -29,6 +33,10 @@ public class CartaoDeCredito implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private User user;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "cartaoDeCredito")
+	private List<DespesaCredito> despesasCredito = new ArrayList<>();
 	
 	public CartaoDeCredito() {
 		
@@ -100,6 +108,14 @@ public class CartaoDeCredito implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public List<DespesaCredito> getDespesasCredito() {
+		return despesasCredito;
+	}
+
+	public void setDespesasCredito(List<DespesaCredito> despesasCredito) {
+		this.despesasCredito = despesasCredito;
 	}
 
 	@Override
