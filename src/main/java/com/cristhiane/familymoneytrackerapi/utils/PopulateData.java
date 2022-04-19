@@ -17,9 +17,11 @@ import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Conta;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaCredito;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaFinanciamentoEmprestimo;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
+import com.cristhiane.familymoneytrackerapi.enums.Banco;
 import com.cristhiane.familymoneytrackerapi.enums.BandeiraCartaoDeCredito;
 import com.cristhiane.familymoneytrackerapi.enums.FormaDePagamento;
 import com.cristhiane.familymoneytrackerapi.enums.TipoConta;
@@ -30,6 +32,7 @@ import com.cristhiane.familymoneytrackerapi.repository.CategoriaReceitaRepositor
 import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaCreditoRepository;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
+import com.cristhiane.familymoneytrackerapi.repository.DespesaFinanciamentoEmprestimoRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
 import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
@@ -65,6 +68,9 @@ public class PopulateData {
 	
 	@Autowired
 	DespesaCreditoRepository despesaCreditoRepository;
+	
+	@Autowired
+	DespesaFinanciamentoEmprestimoRepository despesaFinanciamentoEmprestimoRepository;
 	
 	@PostConstruct
 	public void insertData() throws ParseException {
@@ -147,6 +153,13 @@ public class PopulateData {
 		DespesaCredito roupas = new DespesaCredito(null, 1200, "Roupas para as crianças", sdf.parse("02/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, vestuario, group_admin, 15, santander );
 		
 		despesaCreditoRepository.saveAll(Arrays.asList(maquinaLavar, viagemPraia, roupas));
+		
+		//-------------------------------------------------------------------------
+		// Inserindo despesas de empréstimos e financiamentos
+		DespesaFinanciamentoEmprestimo carro = new DespesaFinanciamentoEmprestimo(null, 40000, "Compra do carro da família", sdf.parse("01/04/2022"), false, null, FormaDePagamento.FINANCIAMENTO, artigosLar, group_user, 48, Banco.BANCO_DO_BRASIL);
+		DespesaFinanciamentoEmprestimo reforma = new DespesaFinanciamentoEmprestimo(null, 15000, "Reforma da sala", sdf.parse("01/03/2022"), false, null, FormaDePagamento.EMPRESTIMO, artigosLar, group_user, 24, Banco.ITAU);
+		
+		despesaFinanciamentoEmprestimoRepository.saveAll(Arrays.asList(carro, reforma));
 	}
 	
 }
