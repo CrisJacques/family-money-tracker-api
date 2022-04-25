@@ -77,6 +77,7 @@ public class PopulateData {
 		// Inserindo perfis de usuário
 		Role role_group_user = new Role(TipoUsuario.USUARIO_COMUM);
 		Role role_group_admin = new Role(TipoUsuario.ADMIN_GRUPO);
+		Role role_system_admin = new Role(TipoUsuario.ADMIN_SISTEMA);
 
 		// Inserindo usuários
 		User group_admin = new User("group_admin", "group_admin@teste.com", encoder.encode("Gr0up@adm1n_T3st3"));
@@ -85,9 +86,12 @@ public class PopulateData {
 		User group_user = new User("group_user", "group_user@teste.com", encoder.encode("Gr0upUs3r_T3st3"));
 		group_user.getRoles().add(role_group_user);
 		
+		User system_admin = new User("system_admin", "system_admin@teste.com", encoder.encode("Syst3m@dm1n_T3st3"));
+		system_admin.getRoles().add(role_system_admin);
+		
 		// Salvando perfis e usuários no banco de dados
-		roleRepository.saveAll(Arrays.asList(role_group_user, role_group_admin));
-		userRepository.saveAll(Arrays.asList(group_admin, group_user));
+		roleRepository.saveAll(Arrays.asList(role_group_user, role_group_admin, role_system_admin));
+		userRepository.saveAll(Arrays.asList(group_admin, group_user, system_admin));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo categorias de despesas
