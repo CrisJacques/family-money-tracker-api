@@ -136,34 +136,54 @@ public class PopulateData {
 		//-------------------------------------------------------------------------
 		// Inserindo receitas
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Receita salarioMesMarcoPai = new Receita(null, 1900, "Salário do mês de Março - pai", sdf.parse("14/03/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesMarcoMae = new Receita(null, 2000, "Salário do mês de Março - mãe", sdf.parse("09/03/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesMarcoTio = new Receita(null, 2100, "Salário do mês de Março - tio", sdf.parse("07/03/2022"), false, null, conta_familia, salario, group_admin);
+		Receita mesadaMesMarco = new Receita(null, 145, "Mesada do mês de Março", sdf.parse("10/03/2022"), false, null, mesada, rendaExtra, group_admin);
+		Receita rendimentosMesMarco = new Receita(null, 65, "Rendimentos investimentos do mês de Março", sdf.parse("09/03/2022"), false, null, poupanca_familia, rendimentoInvestimento, group_admin);
 		
-		Receita salarioMesAbril = new Receita(null, 2000, "Salário do mês de Abril", sdf.parse("15/04/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesAbrilPai = new Receita(null, 2000, "Salário do mês de Abril - pai", sdf.parse("15/04/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesAbrilMae = new Receita(null, 2100, "Salário do mês de Abril - mãe", sdf.parse("10/04/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesAbrilTio = new Receita(null, 2200, "Salário do mês de Abril - tio", sdf.parse("08/04/2022"), false, null, conta_familia, salario, group_admin);
 		Receita mesadaMesAbril = new Receita(null, 150, "Mesada do mês de Abril", sdf.parse("11/04/2022"), false, null, mesada, rendaExtra, group_admin);
-		receitaRepository.saveAll(Arrays.asList(salarioMesAbril, mesadaMesAbril));
+		Receita rendimentosMesAbril = new Receita(null, 70, "Rendimentos investimentos do mês de Abril", sdf.parse("08/04/2022"), false, null, poupanca_familia, rendimentoInvestimento, group_admin);
+		receitaRepository.saveAll(Arrays.asList(salarioMesMarcoPai, salarioMesMarcoMae, salarioMesMarcoTio, mesadaMesMarco, rendimentosMesMarco, salarioMesAbrilPai, salarioMesAbrilMae, salarioMesAbrilTio, mesadaMesAbril, rendimentosMesAbril));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo despesas em débito e dinheiro
-		DespesaDebitoDinheiro almoco = new DespesaDebitoDinheiro(null, 50, "Almoço do dia", sdf.parse("08/04/2022"), false, null, FormaDePagamento.DEBITO, refeicoes, group_admin, conta_familia );
-		DespesaDebitoDinheiro jantar = new DespesaDebitoDinheiro(null, 45, "Jantar do dia", sdf.parse("08/04/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, conta_familia);
-		DespesaDebitoDinheiro lanche_tarde = new DespesaDebitoDinheiro(null, 15, "Lanche da tarde", sdf.parse("07/04/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, mesada);
-		DespesaDebitoDinheiro supermercado_compras = new DespesaDebitoDinheiro(null, 250, "Compras no supermercado", sdf.parse("05/04/2022"), false, null, FormaDePagamento.DINHEIRO, supermercado, group_admin, dinheiro);
+		DespesaDebitoDinheiro almoco_marco = new DespesaDebitoDinheiro(null, 57, "Almoço do dia 09/03", sdf.parse("09/03/2022"), false, null, FormaDePagamento.DEBITO, refeicoes, group_admin, conta_familia );
+		DespesaDebitoDinheiro jantar_marco = new DespesaDebitoDinheiro(null, 46, "Jantar do dia 10/03", sdf.parse("10/03/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, dinheiro);
+		DespesaDebitoDinheiro lanche_tarde_marco = new DespesaDebitoDinheiro(null, 18, "Lanche da tarde do dia 02/03", sdf.parse("02/03/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, mesada);
+		DespesaDebitoDinheiro supermercado_compras_marco = new DespesaDebitoDinheiro(null, 400, "Compras no supermercado - 12/03", sdf.parse("12/03/2022"), false, null, FormaDePagamento.DEBITO, supermercado, group_admin, conta_familia);
 		
-		despesaDebitoDinheiroRepository.saveAll(Arrays.asList(almoco, jantar, lanche_tarde, supermercado_compras));
+		DespesaDebitoDinheiro almoco = new DespesaDebitoDinheiro(null, 50, "Almoço do dia 08/04", sdf.parse("08/04/2022"), false, null, FormaDePagamento.DEBITO, refeicoes, group_admin, conta_familia );
+		DespesaDebitoDinheiro jantar = new DespesaDebitoDinheiro(null, 45, "Jantar do dia 07/04", sdf.parse("07/04/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, conta_familia);
+		DespesaDebitoDinheiro lanche_tarde = new DespesaDebitoDinheiro(null, 15, "Lanche da tarde do dia 06/04", sdf.parse("06/04/2022"), false, null, FormaDePagamento.DINHEIRO, refeicoes, group_admin, mesada);
+		DespesaDebitoDinheiro supermercado_compras = new DespesaDebitoDinheiro(null, 250, "Compras no supermercado - 05/04", sdf.parse("05/04/2022"), false, null, FormaDePagamento.DEBITO, supermercado, group_admin, conta_familia);
+		
+		despesaDebitoDinheiroRepository.saveAll(Arrays.asList(almoco_marco, jantar_marco, lanche_tarde_marco, supermercado_compras_marco, almoco, jantar, lanche_tarde, supermercado_compras));
 
 		//-------------------------------------------------------------------------
 		// Inserindo despesas no crédito
-		DespesaCredito maquinaLavar = new DespesaCredito(null, 2500, "Máquina de lavar roupa", sdf.parse("02/04/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, artigosLar, group_admin, 12, nubank );
-		DespesaCredito viagemPraia = new DespesaCredito(null, 5000, "Viagem para a praia", sdf.parse("15/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, lazer, group_admin, 24, bb );
-		DespesaCredito roupas = new DespesaCredito(null, 1200, "Roupas para as crianças", sdf.parse("02/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, vestuario, group_admin, 15, santander );
+		DespesaCredito televisao = new DespesaCredito(null, 5000, "Televisão para a sala", sdf.parse("25/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, artigosLar, group_admin, 24, nubank );
+		DespesaCredito roupeiro = new DespesaCredito(null, 1800, "Roupeiro para o quarto das crianças", sdf.parse("13/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, artigosLar, group_admin, 10, bb );
+		DespesaCredito roupaCama = new DespesaCredito(null, 1400, "Exames de rotina das crianças", sdf.parse("18/03/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, saude, group_admin, 6, santander );
 		
-		despesaCreditoRepository.saveAll(Arrays.asList(maquinaLavar, viagemPraia, roupas));
+		DespesaCredito maquinaLavar = new DespesaCredito(null, 2500, "Máquina de lavar roupa", sdf.parse("02/04/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, artigosLar, group_admin, 12, nubank );
+		DespesaCredito viagemPraia = new DespesaCredito(null, 5000, "Viagem para a praia", sdf.parse("15/04/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, lazer, group_admin, 24, bb );
+		DespesaCredito roupas = new DespesaCredito(null, 1200, "Roupas para as crianças", sdf.parse("07/04/2022"), false, null, FormaDePagamento.CARTAO_DE_CREDITO, vestuario, group_admin, 15, santander );
+		
+		despesaCreditoRepository.saveAll(Arrays.asList(televisao, roupeiro, roupaCama, maquinaLavar, viagemPraia, roupas));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo despesas de empréstimos e financiamentos
-		DespesaFinanciamentoEmprestimo carro = new DespesaFinanciamentoEmprestimo(null, 40000, "Compra do carro da família", sdf.parse("01/04/2022"), false, null, FormaDePagamento.FINANCIAMENTO, artigosLar, group_user, 48, Banco.BANCO_DO_BRASIL);
+		DespesaFinanciamentoEmprestimo motoPai = new DespesaFinanciamentoEmprestimo(null, 8000, "Compra da moto do pai", sdf.parse("02/03/2022"), false, null, FormaDePagamento.FINANCIAMENTO, transporte, group_user, 36, Banco.BANCO_DO_BRASIL);
+		DespesaFinanciamentoEmprestimo quitarDividas = new DespesaFinanciamentoEmprestimo(null, 2000, "Empréstimo para quitar dívidas", sdf.parse("01/03/2022"), false, null, FormaDePagamento.EMPRESTIMO, contas, group_user, 12, Banco.ITAU);
+		
+		DespesaFinanciamentoEmprestimo carro = new DespesaFinanciamentoEmprestimo(null, 40000, "Compra do carro da família", sdf.parse("01/04/2022"), false, null, FormaDePagamento.FINANCIAMENTO, transporte, group_user, 48, Banco.BANCO_DO_BRASIL);
 		DespesaFinanciamentoEmprestimo reforma = new DespesaFinanciamentoEmprestimo(null, 15000, "Reforma da sala", sdf.parse("01/03/2022"), false, null, FormaDePagamento.EMPRESTIMO, artigosLar, group_user, 24, Banco.ITAU);
 		
-		despesaFinanciamentoEmprestimoRepository.saveAll(Arrays.asList(carro, reforma));
+		despesaFinanciamentoEmprestimoRepository.saveAll(Arrays.asList(motoPai, quitarDividas, carro, reforma));
 	}
 	
 }
