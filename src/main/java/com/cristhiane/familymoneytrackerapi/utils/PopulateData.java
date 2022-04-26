@@ -3,7 +3,6 @@ package com.cristhiane.familymoneytrackerapi.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -18,6 +17,7 @@ import com.cristhiane.familymoneytrackerapi.domain.Conta;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaCredito;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaFinanciamentoEmprestimo;
+import com.cristhiane.familymoneytrackerapi.domain.GrupoUsuarios;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.domain.User;
@@ -33,6 +33,7 @@ import com.cristhiane.familymoneytrackerapi.repository.ContaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaCreditoRepository;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaFinanciamentoEmprestimoRepository;
+import com.cristhiane.familymoneytrackerapi.repository.GrupoUsuariosRepository;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.repository.RoleRepository;
 import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
@@ -72,24 +73,33 @@ public class PopulateData {
 	@Autowired
 	DespesaFinanciamentoEmprestimoRepository despesaFinanciamentoEmprestimoRepository;
 	
+	@Autowired
+	GrupoUsuariosRepository grupoUsuariosRepository;
+	
 	@PostConstruct
 	public void insertData() throws ParseException {
+		// Inserindo grupo de usuários
+		GrupoUsuarios aGrandeFamilia = new GrupoUsuarios(null, "A Grande Família", "aGrandeFamilia");
+		
 		// Inserindo perfis de usuário
 		Role role_group_user = new Role(TipoUsuario.USUARIO_COMUM);
 		Role role_group_admin = new Role(TipoUsuario.ADMIN_GRUPO);
 		Role role_system_admin = new Role(TipoUsuario.ADMIN_SISTEMA);
 
 		// Inserindo usuários
-		User group_admin = new User("group_admin", "group_admin@teste.com", encoder.encode("Gr0up@adm1n_T3st3"));
+		User group_admin = new User("Admin de grupo", "group_admin@teste.com", encoder.encode("Gr0up@adm1n_T3st3"));
 		group_admin.getRoles().add(role_group_admin);
+		group_admin.setGrupoUsuarios(aGrandeFamilia);
 		
-		User group_user = new User("group_user", "group_user@teste.com", encoder.encode("Gr0upUs3r_T3st3"));
+		User group_user = new User("Usuário de grupo", "group_user@teste.com", encoder.encode("Gr0upUs3r_T3st3"));
 		group_user.getRoles().add(role_group_user);
+		group_user.setGrupoUsuarios(aGrandeFamilia);
 		
-		User system_admin = new User("system_admin", "system_admin@teste.com", encoder.encode("Syst3m@dm1n_T3st3"));
+		User system_admin = new User("Admin do sistema", "system_admin@teste.com", encoder.encode("Syst3m@dm1n_T3st3"));
 		system_admin.getRoles().add(role_system_admin);
 		
-		// Salvando perfis e usuários no banco de dados
+		// Salvando grupo, perfis e usuários no banco de dados
+		grupoUsuariosRepository.saveAll(Arrays.asList(aGrandeFamilia));
 		roleRepository.saveAll(Arrays.asList(role_group_user, role_group_admin, role_system_admin));
 		userRepository.saveAll(Arrays.asList(group_admin, group_user, system_admin));
 		

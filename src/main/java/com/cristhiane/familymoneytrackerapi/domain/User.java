@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -70,6 +71,10 @@ public class User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<CartaoDeCredito> cartoesDeCredito = new ArrayList<>();
+	
+	@ManyToOne
+	@JoinColumn(name = "id_grupo_usuarios")
+	private GrupoUsuarios grupoUsuarios;
 	
 	public User() {
 	}
@@ -166,6 +171,14 @@ public class User {
 
 	public void setDespesas(List<Despesa> despesas) {
 		this.despesas = despesas;
+	}
+
+	public GrupoUsuarios getGrupoUsuarios() {
+		return grupoUsuarios;
+	}
+
+	public void setGrupoUsuarios(GrupoUsuarios grupoUsuarios) {
+		this.grupoUsuarios = grupoUsuarios;
 	}
 
 }
