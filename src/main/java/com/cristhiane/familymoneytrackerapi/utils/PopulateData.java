@@ -80,6 +80,7 @@ public class PopulateData {
 	public void insertData() throws ParseException {
 		// Inserindo grupo de usuários
 		GrupoUsuarios aGrandeFamilia = new GrupoUsuarios(null, "A Grande Família", "aGrandeFamilia");
+		GrupoUsuarios adminSistema = new GrupoUsuarios(null, "Admins do Sistema", "adminsDoSistema");
 		
 		// Inserindo perfis de usuário
 		Role role_group_user = new Role(TipoUsuario.USUARIO_COMUM);
@@ -97,9 +98,10 @@ public class PopulateData {
 		
 		User system_admin = new User("Admin do sistema", "system_admin@teste.com", encoder.encode("Syst3m@dm1n_T3st3"));
 		system_admin.getRoles().add(role_system_admin);
+		system_admin.setGrupoUsuarios(adminSistema);
 		
 		// Salvando grupo, perfis e usuários no banco de dados
-		grupoUsuariosRepository.saveAll(Arrays.asList(aGrandeFamilia));
+		grupoUsuariosRepository.saveAll(Arrays.asList(aGrandeFamilia, adminSistema));
 		roleRepository.saveAll(Arrays.asList(role_group_user, role_group_admin, role_system_admin));
 		userRepository.saveAll(Arrays.asList(group_admin, group_user, system_admin));
 		
