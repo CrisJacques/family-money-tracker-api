@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cristhiane.familymoneytrackerapi.domain.GrupoUsuarios;
 import com.cristhiane.familymoneytrackerapi.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,16 +17,18 @@ public class UserDetailsImpl implements UserDetails {
 	private Long id;
 	private String username;
 	private String email;
+	private GrupoUsuarios grupoUsuarios;
 	@JsonIgnore
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
 	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities, GrupoUsuarios grupoUsuarios) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.grupoUsuarios = grupoUsuarios;
 	}
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
@@ -36,7 +39,8 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(), 
-				authorities);
+				authorities,
+				user.getGrupoUsuarios());
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,4 +85,12 @@ public class UserDetailsImpl implements UserDetails {
 		UserDetailsImpl user = (UserDetailsImpl) o;
 		return Objects.equals(id, user.id);
 	}
+	public GrupoUsuarios getGrupoUsuarios() {
+		return grupoUsuarios;
+	}
+	public void setGrupoUsuarios(GrupoUsuarios grupoUsuarios) {
+		this.grupoUsuarios = grupoUsuarios;
+	}
+	
+	
 }
