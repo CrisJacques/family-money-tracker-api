@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
+import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.service.ReceitaService;
 
 @RestController
@@ -21,6 +22,13 @@ public class ReceitaController {
 	
 	@Autowired
 	ReceitaService service;
+	
+	@RequestMapping(value = "/recentes", method = RequestMethod.GET)
+	public ResponseEntity<?> findRecentIncomes(){
+		List<ReceitaDTO> obj = service.findRecentIncomes();
+		
+		return ResponseEntity.ok().body(obj);
+	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id){

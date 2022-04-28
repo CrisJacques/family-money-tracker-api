@@ -2,12 +2,17 @@ package com.cristhiane.familymoneytrackerapi.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
+import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.DataIntegrityException;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.ObjetoNaoEncontradoException;
@@ -16,6 +21,13 @@ import com.cristhiane.familymoneytrackerapi.service.exceptions.ObjetoNaoEncontra
 public class DespesaDebitoDinheiroService {
 	@Autowired
 	private DespesaDebitoDinheiroRepository repo;
+	
+	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
+	
+	public List<DespesaDTO> findRecentExpensesDebitCash() {
+		List<DespesaDebitoDinheiro> list = repo.findAll(this.fiveMostRecent).getContent();
+		return list.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+	}
 	
 	public DespesaDebitoDinheiro find(Integer id) {
 		Optional<DespesaDebitoDinheiro> obj = repo.findById(id);

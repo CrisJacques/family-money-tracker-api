@@ -2,12 +2,17 @@ package com.cristhiane.familymoneytrackerapi.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
+import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.DataIntegrityException;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.ObjetoNaoEncontradoException;
@@ -16,6 +21,13 @@ import com.cristhiane.familymoneytrackerapi.service.exceptions.ObjetoNaoEncontra
 public class ReceitaService {
 	@Autowired
 	private ReceitaRepository repo;
+	
+	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
+	
+	public List<ReceitaDTO> findRecentIncomes() {
+		List<Receita> list = repo.findAll(this.fiveMostRecent).getContent();
+		return list.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
+	}
 	
 	public Receita find(Integer id) {
 		Optional<Receita> obj = repo.findById(id);
