@@ -1,7 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 
@@ -12,7 +12,7 @@ public class ReceitaDTO implements Serializable {
 	private Integer id;
 	private float valor;
 	private String descricao;
-	private Date data;
+	private String data;
 	private String nomeCategoriaReceita;
 	private String tipo;
 	
@@ -22,10 +22,11 @@ public class ReceitaDTO implements Serializable {
 
 	public ReceitaDTO(Receita obj) {
 		super();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		this.id = obj.getId();
 		this.valor = obj.getValor();
 		this.descricao = obj.getDescricao();
-		this.data = obj.getData();
+		this.data = sdf.format(obj.getData());
 		this.nomeCategoriaReceita = obj.getCategoriaReceita().getNome();
 		this.tipo = "Receita";
 	}
@@ -55,11 +56,11 @@ public class ReceitaDTO implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 

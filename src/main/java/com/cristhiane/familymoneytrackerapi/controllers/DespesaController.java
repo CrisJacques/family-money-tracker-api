@@ -20,6 +20,7 @@ public class DespesaController {
 	
 	@RequestMapping(value = "/recentes", method = RequestMethod.GET)
 	public ResponseEntity<?> findRecentExpenses(){
+		//Retorna as 5 despesas mais recentes, independente da forma de pagamento
 		List<DespesaDTO> obj = service.listRecentExpenses();
 		
 		return ResponseEntity.ok().body(obj);

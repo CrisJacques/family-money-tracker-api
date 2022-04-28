@@ -25,6 +25,7 @@ public class ReceitaController {
 	
 	@RequestMapping(value = "/recentes", method = RequestMethod.GET)
 	public ResponseEntity<?> findRecentIncomes(){
+		//Retorna as 5 receitas mais recentes
 		List<ReceitaDTO> obj = service.findRecentIncomes();
 		
 		return ResponseEntity.ok().body(obj);

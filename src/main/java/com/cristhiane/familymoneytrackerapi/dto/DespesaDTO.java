@@ -1,6 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.dto;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.cristhiane.familymoneytrackerapi.domain.Despesa;
@@ -13,6 +14,7 @@ public class DespesaDTO implements Serializable {
 	private float valor;
 	private String descricao;
 	private Date data;
+	private String stringData;
 	private String nomeCategoriaDespesa;
 	private String tipo;
 	
@@ -22,10 +24,12 @@ public class DespesaDTO implements Serializable {
 
 	public DespesaDTO(Despesa obj) {
 		super();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		this.id = obj.getId();
 		this.valor = obj.getValor();
 		this.descricao = obj.getDescricao();
 		this.data = obj.getData();
+		this.stringData = sdf.format(this.data);
 		this.nomeCategoriaDespesa = obj.getCategoriaDespesa().getNome();
 		this.tipo = "Despesa";
 	}
@@ -77,6 +81,14 @@ public class DespesaDTO implements Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getStringData() {
+		return stringData;
+	}
+
+	public void setStringData(String stringData) {
+		this.stringData = stringData;
 	}
 
 }

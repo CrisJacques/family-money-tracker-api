@@ -39,6 +39,7 @@ public class TransacaoService {
 	}
 	
 	public List<DespesaDTO> listRecentExpenses() {
+		
 		List<DespesaDTO> listRecentExpensesDebitCash = despesaDebitoDinheiroService.findRecentExpensesDebitCash();
 		List<DespesaDTO> listRecentExpensesCredit = despesaCreditoService.findRecentExpensesCredit();
 		List<DespesaDTO> listRecentExpensesFinancingLoan = despesaFinanciamentoEmprestimoService.findRecentExpensesFinancingLoan();
@@ -51,7 +52,9 @@ public class TransacaoService {
 			}
 		});
 		
-		return listRecentExpenses;
+		List<DespesaDTO> firstFiveExpenses = listRecentExpenses.stream().limit(5).collect(Collectors.toList()); // retorna as 5 despesas mais recentes
+		
+		return firstFiveExpenses;
 	}
 
 }
