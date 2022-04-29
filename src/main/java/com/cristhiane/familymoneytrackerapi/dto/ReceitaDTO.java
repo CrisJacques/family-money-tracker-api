@@ -2,6 +2,7 @@ package com.cristhiane.familymoneytrackerapi.dto;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 
@@ -22,7 +23,10 @@ public class ReceitaDTO implements Serializable {
 
 	public ReceitaDTO(Receita obj) {
 		super();
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		
 		this.id = obj.getId();
 		this.valor = obj.getValor();
 		this.descricao = obj.getDescricao();
