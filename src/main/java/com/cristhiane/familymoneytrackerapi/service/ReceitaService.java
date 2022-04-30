@@ -1,5 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
@@ -22,7 +24,25 @@ public class ReceitaService {
 	@Autowired
 	private ReceitaRepository repo;
 	
+	@Autowired
+	private CategoriaReceitaService categoriaReceitaService;
+	
 	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
+	
+	public Hashtable<String, Object> findIncomesByCategory() {
+		Hashtable<String, Object> receitasPorCategoria = new Hashtable<String, Object>();
+		
+		List<CategoriaReceita> listaCategoriaReceita = categoriaReceitaService.findAll();
+		
+		for(CategoriaReceita categoriaReceita : listaCategoriaReceita) {
+			List<Receita> listIncomes = repo.findByCategoriaReceita(categoriaReceita);
+			List<ReceitaDTO> listIncomesDTO = listIncomes.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
+			
+			receitasPorCategoria.put(categoriaReceita.getNome(), listIncomesDTO);
+
+		}
+		return receitasPorCategoria;
+	}
 	
 	public List<ReceitaDTO> findRecentIncomes() {
 		List<Receita> list = repo.findAll(this.fiveMostRecent).getContent();

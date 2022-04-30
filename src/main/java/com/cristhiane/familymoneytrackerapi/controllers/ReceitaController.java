@@ -1,6 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.controllers;
 
 import java.net.URI;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,13 @@ public class ReceitaController {
 	public ResponseEntity<?> findRecentIncomes(){
 		//Retorna as 5 receitas mais recentes
 		List<ReceitaDTO> obj = service.findRecentIncomes();
+		
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value = "/por-categoria", method = RequestMethod.GET)
+	public ResponseEntity<?> findIncomesByCategory(){
+		Hashtable<String, Object> obj = service.findIncomesByCategory();
 		
 		return ResponseEntity.ok().body(obj);
 	}
