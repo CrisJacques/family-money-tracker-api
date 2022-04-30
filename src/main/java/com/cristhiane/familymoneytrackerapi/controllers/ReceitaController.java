@@ -34,7 +34,14 @@ public class ReceitaController {
 	
 	@RequestMapping(value = "/por-categoria", method = RequestMethod.GET)
 	public ResponseEntity<?> findIncomesByCategory(){
-		Hashtable<String, Object> obj = service.findIncomesByCategory();
+		Hashtable<String, List<ReceitaDTO>> obj = service.findIncomesByCategory();
+		
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value = "/por-categoria/valor-total", method = RequestMethod.GET)
+	public ResponseEntity<?> calculateSumIncomesByCategory(){
+		Hashtable<String, Object> obj = service.calculateSumIncomesByCategory();
 		
 		return ResponseEntity.ok().body(obj);
 	}
