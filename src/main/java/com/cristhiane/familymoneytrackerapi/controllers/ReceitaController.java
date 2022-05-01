@@ -4,7 +4,6 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -22,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.service.ReceitaService;
+import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
 @RestController
 @RequestMapping(value = "/api/receitas")
@@ -52,29 +52,17 @@ public class ReceitaController {
 				Date endDate = null;
 
 				if (start == null) {
-					// Se o início do período não foi informado na requisição, é feita uma lógica
-					// para configurar o período de busca como sendo todo o mês atual (do dia 1 até
-					// o último dia do mês)
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(new Date()); // Configurando a data atual no calendar
-
-					int month = calendar.get(Calendar.MONTH);
-					int year = calendar.get(Calendar.YEAR);
+					if (end != null) {
+						return ResponseEntity.badRequest().body(
+								"Se o parâmetro start não foi informado, o parâmetro end também não deve ser informado.");
+					}else {
+						// Se o período não foi informado na requisição, é feita uma lógica
+						// para configurar o período de busca como sendo todo o mês atual (do dia 1 até
+						// o último dia do mês)
+						startDate = DefaultPeriodOfSearch.setStartOfPeriod();
+						endDate = DefaultPeriodOfSearch.setEndOfPeriod();
+					}			
 					
-					int startDay = 1; // primeiro dia do período será o primeiro dia do mês
-					int endDay = calendar.getActualMaximum(Calendar.DATE); // último dia do período será o último dia do mês atual
-
-					// Data inicial do período de busca
-					calendar.set(year, month, startDay, 0, 0, 0); // Início do período será o primeiro dia do mês atual, à meia-noite
-					startDate = calendar.getTime();
-					System.out.println(startDate);
-					
-					// Data final do período de busca
-					calendar.set(year, month, endDay, 23, 59, 59);// Final do período será o último dia do mês atual, às 23:59:59
-					endDate = calendar.getTime(); 
-					System.out.println(endDate);
-					
-
 				} else {// Se o início do período foi informado na requisição, é feito o processamento
 						// do início e final do período e tais valores são repassados para o service
 						// responsável pela busca de receitas por categoria dentro do período informado.
@@ -88,14 +76,18 @@ public class ReceitaController {
 						return ResponseEntity.badRequest().body(
 								"Formato inválido de data de início do período (parâmetro start). O formato esperado é dd/MM/yyyy");
 					}
-
-					try {
-						endDate = sdf.parse(end);
-					} catch (ParseException e) {
-						e.printStackTrace();
+					if (end == null) {
 						return ResponseEntity.badRequest().body(
-								"Formato inválido de data de final do período (parâmetro end). O formato esperado é dd/MM/yyyy");
-					}
+								"Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
+					}else {
+						try {
+							endDate = sdf.parse(end);
+						} catch (ParseException e) {
+							e.printStackTrace();
+							return ResponseEntity.badRequest().body(
+									"Formato inválido de data de final do período (parâmetro end). O formato esperado é dd/MM/yyyy");
+						}
+					}	
 				}
 				// Chamando o service responsável por retornar a lista de receitas por
 				// categoria, passando as datas de início e final vindas da requisição, ou os
