@@ -1,5 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
@@ -30,13 +31,13 @@ public class ReceitaService {
 	
 	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
 	
-	public Hashtable<String, List<ReceitaDTO>> findIncomesByCategory() {
+	public Hashtable<String, List<ReceitaDTO>> findIncomesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
 		Hashtable<String, List<ReceitaDTO>> receitasPorCategoria = new Hashtable<String, List<ReceitaDTO>>();
 		
 		List<CategoriaReceita> listaCategoriaReceita = categoriaReceitaService.findAll();
 		
 		for(CategoriaReceita categoriaReceita : listaCategoriaReceita) {
-			List<Receita> listIncomes = repo.findByCategoriaReceita(categoriaReceita);
+			List<Receita> listIncomes = repo.findByCategoriaReceitaAndDataBetween(categoriaReceita, timeStart, timeEnd);
 			List<ReceitaDTO> listIncomesDTO = listIncomes.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
 			
 			receitasPorCategoria.put(categoriaReceita.getNome(), listIncomesDTO);
@@ -47,10 +48,10 @@ public class ReceitaService {
 
 	
 	
-	public Hashtable<String, Object> calculateSumIncomesByCategory() {
+	public Hashtable<String, Object> calculateSumIncomesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
 		Hashtable<String, Object> totalIncomesByCategory = new Hashtable<String, Object>();
 
-		Hashtable<String, List<ReceitaDTO>> receitasPorCategoria = this.findIncomesByCategory();
+		Hashtable<String, List<ReceitaDTO>> receitasPorCategoria = this.findIncomesByCategoryAndByPeriod(timeStart, timeEnd);
 
 		Set<String> setOfKeys = receitasPorCategoria.keySet();
 
@@ -95,8 +96,9 @@ public class ReceitaService {
 		}
 	}
 	
-	public List<Receita> findAll() {
-		return repo.findAll();
+	public List<ReceitaDTO> findAll() {
+		List<Receita> list = repo.findAll();
+		return list.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
 	}
 
 }

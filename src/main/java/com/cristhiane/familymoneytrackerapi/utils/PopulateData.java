@@ -159,7 +159,26 @@ public class PopulateData {
 		Receita salarioMesAbrilTio = new Receita(null, 2200, "Salário do mês de Abril - tio", sdf.parse("08/04/2022"), false, null, conta_familia, salario, group_admin);
 		Receita mesadaMesAbril = new Receita(null, 150, "Mesada do mês de Abril", sdf.parse("11/04/2022"), false, null, mesada, rendaExtra, group_admin);
 		Receita rendimentosMesAbril = new Receita(null, 70, "Rendimentos investimentos do mês de Abril", sdf.parse("08/04/2022"), false, null, poupanca_familia, rendimentoInvestimento, group_admin);
-		receitaRepository.saveAll(Arrays.asList(salarioMesMarcoPai, salarioMesMarcoMae, salarioMesMarcoTio, mesadaMesMarco, rendimentosMesMarco, salarioMesAbrilPai, salarioMesAbrilMae, salarioMesAbrilTio, mesadaMesAbril, rendimentosMesAbril));
+		
+		Receita salarioMesMaioPai = new Receita(null, 2541, "Salário do mês de Maio - pai", sdf.parse("15/05/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesMaioMae = new Receita(null, 2654, "Salário do mês de Maio - mãe", sdf.parse("10/05/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesMaioTio = new Receita(null, 2478, "Salário do mês de Maio - tio", sdf.parse("08/05/2022"), false, null, conta_familia, salario, group_admin);
+		Receita mesadaMesMaio = new Receita(null, 157, "Mesada do mês de Maio", sdf.parse("11/05/2022"), false, null, mesada, rendaExtra, group_admin);
+		Receita rendimentosMesMaio = new Receita(null, 7096, "Rendimentos investimentos do mês de Maio", sdf.parse("08/05/2022"), false, null, poupanca_familia, rendimentoInvestimento, group_admin);
+		
+		Receita salarioMesJunhoPai = new Receita(null, 2547, "Salário do mês de Junho - pai", sdf.parse("15/06/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesJunhoMae = new Receita(null, 2698, "Salário do mês de Junho - mãe", sdf.parse("10/06/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesJunhoTio = new Receita(null, 2874, "Salário do mês de Junho - tio", sdf.parse("08/06/2022"), false, null, conta_familia, salario, group_admin);
+		Receita mesadaMesJunho = new Receita(null, 165, "Mesada do mês de Junho", sdf.parse("11/06/2022"), false, null, mesada, rendaExtra, group_admin);
+		Receita rendimentosMesJunho = new Receita(null, 54, "Rendimentos investimentos do mês de Junho", sdf.parse("08/06/2022"), false, null, poupanca_familia, rendimentoInvestimento, group_admin);
+		
+		Receita salarioMesJulhoPai = new Receita(null, 2687, "Salário do mês de Julho - pai", sdf.parse("15/07/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesJulhoMae = new Receita(null, 2458, "Salário do mês de Julho - mãe", sdf.parse("10/07/2022"), false, null, conta_familia, salario, group_admin);
+		Receita salarioMesJulhoTio = new Receita(null, 2965, "Salário do mês de Julho - tio", sdf.parse("08/07/2022"), false, null, conta_familia, salario, group_admin);
+		Receita mesadaMesJulho = new Receita(null, 178, "Mesada do mês de Julho", sdf.parse("11/07/2022"), false, null, mesada, rendaExtra, group_admin);
+		Receita rendimentosMesJulho = new Receita(null, 68, "Rendimentos investimentos do mês de Julho", sdf.parse("08/07/2022"), false, null, poupanca_familia, rendimentoInvestimento, group_admin);
+		
+		receitaRepository.saveAll(Arrays.asList(salarioMesMarcoPai, salarioMesMarcoMae, salarioMesMarcoTio, mesadaMesMarco, rendimentosMesMarco, salarioMesAbrilPai, salarioMesAbrilMae, salarioMesAbrilTio, mesadaMesAbril, rendimentosMesAbril, salarioMesMaioPai, salarioMesMaioMae, salarioMesMaioTio, mesadaMesMaio, rendimentosMesMaio, salarioMesJunhoPai, salarioMesJunhoMae, salarioMesJunhoTio, mesadaMesJunho, rendimentosMesJunho, salarioMesJulhoPai, salarioMesJulhoMae, salarioMesJulhoTio, mesadaMesJulho, rendimentosMesJulho));
 		
 		//-------------------------------------------------------------------------
 		// Inserindo despesas em débito e dinheiro

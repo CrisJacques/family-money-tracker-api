@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,6 +24,7 @@ public abstract class Transacao implements Serializable {
 	private Integer id;
 	private float valor;
 	private String descricao;
+	@Temporal(TemporalType.DATE)
 	private Date data;
 	private boolean recorrente;
 	private Integer diaLancamentoRecorrente;
