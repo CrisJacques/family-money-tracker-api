@@ -20,6 +20,7 @@ import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.DataIntegrityException;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.ObjetoNaoEncontradoException;
+import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
 @Service
 public class ReceitaService {
@@ -68,7 +69,10 @@ public class ReceitaService {
 	 
 	
 	public List<ReceitaDTO> findRecentIncomes() {
-		List<Receita> list = repo.findAll(this.fiveMostRecent).getContent();
+		Date startDate = DefaultPeriodOfSearch.setStartOfPeriod();
+		Date endDate = DefaultPeriodOfSearch.setEndOfPeriod();
+		
+		List<Receita> list = repo.findAllByDataBetween(startDate, endDate);
 		return list.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
 	}
 	
