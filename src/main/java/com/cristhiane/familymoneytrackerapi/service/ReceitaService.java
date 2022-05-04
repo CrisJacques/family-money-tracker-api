@@ -9,9 +9,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
@@ -30,8 +27,6 @@ public class ReceitaService {
 	@Autowired
 	private CategoriaReceitaService categoriaReceitaService;
 	
-	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
-	
 	public Hashtable<String, List<ReceitaDTO>> findIncomesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
 		Hashtable<String, List<ReceitaDTO>> receitasPorCategoria = new Hashtable<String, List<ReceitaDTO>>();
 		
@@ -47,8 +42,6 @@ public class ReceitaService {
 		return receitasPorCategoria;
 	}
 
-	
-	
 	public Hashtable<String, Object> calculateSumIncomesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
 		Hashtable<String, Object> totalIncomesByCategory = new Hashtable<String, Object>();
 
@@ -67,7 +60,6 @@ public class ReceitaService {
 		return totalIncomesByCategory;
 	}
 	 
-	
 	public List<ReceitaDTO> findRecentIncomes() {
 		Date startDate = DefaultPeriodOfSearch.setStartOfPeriod();
 		Date endDate = DefaultPeriodOfSearch.setEndOfPeriod();

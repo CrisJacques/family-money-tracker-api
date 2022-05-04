@@ -1,5 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
 import com.cristhiane.familymoneytrackerapi.domain.DespesaFinanciamentoEmprestimo;
 import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaFinanciamentoEmprestimoRepository;
@@ -22,7 +25,25 @@ public class DespesaFinanciamentoEmprestimoService {
 	@Autowired
 	private DespesaFinanciamentoEmprestimoRepository repo;
 	
+	@Autowired
+	private CategoriaDespesaService categoriaDespesaService;
+	
 	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
+	
+	public Hashtable<String, List<DespesaDTO>> findFinancingExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = new Hashtable<String, List<DespesaDTO>>();
+		
+		List<CategoriaDespesa> listaCategoriaDespesa = categoriaDespesaService.findAll();
+		
+		for(CategoriaDespesa categoriaDespesa : listaCategoriaDespesa) {
+			List<DespesaFinanciamentoEmprestimo> listFinancingExpenses = repo.findByCategoriaDespesaAndDataBetween(categoriaDespesa, timeStart, timeEnd);
+			List<DespesaDTO> listFinancingExpensesDTO = listFinancingExpenses.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+			
+			despesasPorCategoria.put(categoriaDespesa.getNome(), listFinancingExpensesDTO);
+
+		}
+		return despesasPorCategoria;
+	}
 	
 	public List<DespesaDTO> findRecentExpensesFinancingLoan() {
 		List<DespesaFinanciamentoEmprestimo> list = repo.findAll(this.fiveMostRecent).getContent();
