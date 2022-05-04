@@ -1,7 +1,10 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -9,8 +12,15 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaCredito;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaFinanciamentoEmprestimo;
 import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
 import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
+import com.cristhiane.familymoneytrackerapi.repository.DespesaCreditoRepository;
+import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
+import com.cristhiane.familymoneytrackerapi.repository.DespesaFinanciamentoEmprestimoRepository;
 
 @Service
 public class TransacaoService {
@@ -23,11 +33,67 @@ public class TransacaoService {
 	
 	@Autowired
 	DespesaCreditoService despesaCreditoService;
-	
+
 	@Autowired
 	DespesaFinanciamentoEmprestimoService despesaFinanciamentoEmprestimoService;
+	
+	@Autowired
+	CategoriaDespesaService categoriaDespesaService;
+	
+	@Autowired
+	DespesaDebitoDinheiroRepository despesaDebitoDinheiroRepository;
+	
+	@Autowired
+	DespesaCreditoRepository despesaCreditoRepository;
+	
+	@Autowired
+	DespesaFinanciamentoEmprestimoRepository despesaFinanciamentoEmprestimoRepository;
+	
+	public Hashtable<String, List<DespesaDTO>> findExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = new Hashtable<String, List<DespesaDTO>>();
+		
+		List<CategoriaDespesa> listaCategoriaDespesa = categoriaDespesaService.findAll();
+		
+		for(CategoriaDespesa categoriaDespesa : listaCategoriaDespesa) {
+			List<DespesaDTO> listExpensesDTO = new ArrayList<>();
+			
+			List<DespesaDebitoDinheiro> listExpensesDebit = despesaDebitoDinheiroRepository.findByCategoriaDespesaAndDataBetween(categoriaDespesa, timeStart, timeEnd);
+			List<DespesaDTO> listExpensesDebitDTO = listExpensesDebit.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+			listExpensesDTO.addAll(listExpensesDebitDTO);
+			
+			List<DespesaCredito> listExpensesCredit = despesaCreditoRepository.findByCategoriaDespesaAndDataBetween(categoriaDespesa, timeStart, timeEnd);
+			List<DespesaDTO> listExpensesCreditDTO = listExpensesCredit.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+			listExpensesDTO.addAll(listExpensesCreditDTO);
+			
+			List<DespesaFinanciamentoEmprestimo> listExpensesFinancing = despesaFinanciamentoEmprestimoRepository.findByCategoriaDespesaAndDataBetween(categoriaDespesa, timeStart, timeEnd);
+			List<DespesaDTO> listExpensesFinancingDTO = listExpensesFinancing.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+			listExpensesDTO.addAll(listExpensesFinancingDTO);
+			
+			despesasPorCategoria.put(categoriaDespesa.getNome(), listExpensesDTO);
 
-	public List<?> listRecentTransactions() {
+		}
+		return despesasPorCategoria;
+	}
+
+	public List<DespesaDTO> findAllExpenses(){
+		List<DespesaDTO> listExpensesDTO = new ArrayList<>();
+		
+		List<DespesaDebitoDinheiro> listExpensesDebit = despesaDebitoDinheiroRepository.findAll();
+		List<DespesaDTO> listExpensesDebitDTO = listExpensesDebit.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+		listExpensesDTO.addAll(listExpensesDebitDTO);
+		
+		List<DespesaCredito> listExpensesCredit = despesaCreditoRepository.findAll();
+		List<DespesaDTO> listExpensesCreditDTO = listExpensesCredit.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+		listExpensesDTO.addAll(listExpensesCreditDTO);
+		
+		List<DespesaFinanciamentoEmprestimo> listExpensesFinancing = despesaFinanciamentoEmprestimoRepository.findAll();
+		List<DespesaDTO> listExpensesFinancingDTO = listExpensesFinancing.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
+		listExpensesDTO.addAll(listExpensesFinancingDTO);
+				
+		return listExpensesDTO;
+	}
+	
+	public List<?> findRecentTransactions() {
 		List<ReceitaDTO> listRecentIncomes = receitaService.findRecentIncomes();
 		List<DespesaDTO> listRecentExpensesDebitCash = despesaDebitoDinheiroService.findRecentExpensesDebitCash();
 		List<DespesaDTO> listRecentExpensesCredit = despesaCreditoService.findRecentExpensesCredit();
@@ -38,7 +104,7 @@ public class TransacaoService {
 		return listRecentTransactions;
 	}
 	
-	public List<DespesaDTO> listRecentExpenses() {
+	public List<DespesaDTO> findRecentExpenses() {
 		
 		List<DespesaDTO> listRecentExpensesDebitCash = despesaDebitoDinheiroService.findRecentExpensesDebitCash();
 		List<DespesaDTO> listRecentExpensesCredit = despesaCreditoService.findRecentExpensesCredit();
