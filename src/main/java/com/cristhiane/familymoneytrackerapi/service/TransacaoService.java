@@ -141,5 +141,23 @@ public class TransacaoService {
 		}
 		return totalExpensesByCategory;
 	}
+	
+	public Hashtable<String, Object> calculateSumExpensesByPeriod(Date timeStart, Date timeEnd){
+		float sumExpensesByPeriod = 0;
+		Hashtable<String, Object> totalExpensesByPeriod = new Hashtable<String, Object>();
+		
+		Hashtable<String, Object> totalExpensesByCategory = this.calculateSumExpensesByCategoryAndByPeriod(timeStart, timeEnd);
+		
+		Set<String> setOfKeys = totalExpensesByCategory.keySet();
+		
+		for (String key : setOfKeys) {
+			float actualValue = (float) totalExpensesByCategory.get(key);
+			sumExpensesByPeriod = sumExpensesByPeriod + actualValue;
+		}
+		
+		totalExpensesByPeriod.put("Total", sumExpensesByPeriod);
+		
+		return totalExpensesByPeriod;
+	}
 
 }
