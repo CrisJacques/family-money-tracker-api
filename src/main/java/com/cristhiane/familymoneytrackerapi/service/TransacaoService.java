@@ -160,23 +160,35 @@ public class TransacaoService {
 		return totalExpensesByPeriod;
 	}
 	
-	public Hashtable<String, Object> calculateSumIncomesAndExpensesByPeriod(Date timeStart, Date timeEnd){
+	public Hashtable<String, Object> calculateSumIncomesAndExpensesByPeriod(Date timeStart, Date timeEnd,
+			boolean withBalance) {
+		float totalIncomes = 0;
+		float totalExpenses = 0;
+
 		Hashtable<String, Object> totalIncomesAndExpensesByPeriod = new Hashtable<String, Object>();
-		
+
 		Hashtable<String, Object> totalExpensesByPeriod = this.calculateSumExpensesByPeriod(timeStart, timeEnd);
 		Hashtable<String, Object> totalIncomesByPeriod = receitaService.calculateSumIncomesByPeriod(timeStart, timeEnd);
-		
+
 		Set<String> setOfKeysIncomes = totalIncomesByPeriod.keySet();
 		for (String key : setOfKeysIncomes) {
+			totalIncomes = (float) totalIncomesByPeriod.get(key);
 			totalIncomesAndExpensesByPeriod.put("Receitas", totalIncomesByPeriod.get(key));
 		}
-		
+
 		Set<String> setOfKeysExpenses = totalExpensesByPeriod.keySet();
 		for (String key : setOfKeysExpenses) {
+			totalExpenses = (float) totalExpensesByPeriod.get(key);
 			totalIncomesAndExpensesByPeriod.put("Despesas", totalExpensesByPeriod.get(key));
 		}
 
+		if (withBalance) {
+			float balance = totalIncomes - totalExpenses;
+
+			totalIncomesAndExpensesByPeriod.put("Saldo", balance);
+		}
 		return totalIncomesAndExpensesByPeriod;
+
 	}
 
 }

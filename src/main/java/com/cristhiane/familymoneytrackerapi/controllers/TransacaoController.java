@@ -30,7 +30,7 @@ public class TransacaoController {
 	}
 	
 	@RequestMapping(value = "/total-geral", method = RequestMethod.GET)
-	public ResponseEntity<?> calculateSumExpensesByPeriod(@RequestParam(required = false) String start,
+	public ResponseEntity<?> calculateSumExpensesByPeriod(@RequestParam(required = false) String saldo, @RequestParam(required = false) String start,
 			@RequestParam(required = false) String end) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date startDate = null;
@@ -76,9 +76,21 @@ public class TransacaoController {
 			}
 		}
 
-		Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate);
+		if(saldo == null) {
+			Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate, false);
+			return ResponseEntity.ok().body(obj);
+		}else if(saldo.equals("true")) {
+			Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate, true);
+			return ResponseEntity.ok().body(obj);
+		}else if (saldo.equals("false")) {
+			Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate, false);
+			return ResponseEntity.ok().body(obj);
+		}else {
+			return ResponseEntity.badRequest().body(
+					"O parâmetro saldo apenas aceita true ou false como valores válidos");
+		}
 
-		return ResponseEntity.ok().body(obj);
+		
 	}
 
 }
