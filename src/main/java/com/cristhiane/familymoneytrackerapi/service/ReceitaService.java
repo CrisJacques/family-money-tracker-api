@@ -1,5 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -65,7 +67,17 @@ public class ReceitaService {
 		Date endDate = DefaultPeriodOfSearch.setEndOfPeriod();
 		
 		List<Receita> list = repo.findAllByDataBetween(startDate, endDate);
-		return list.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
+		List<ReceitaDTO> listDTO = list.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
+		
+		Collections.sort(listDTO, new Comparator<ReceitaDTO>() {
+			public int compare(ReceitaDTO one, ReceitaDTO other) {
+				return other.getData().compareTo(one.getData()); // fazendo dessa forma os registros são ordenados do mais recente para o mais antigo
+			}
+		});
+		
+		List<ReceitaDTO> firstFiveIncomes = listDTO.stream().limit(5).collect(Collectors.toList()); // retorna as 5 receitas mais recentes
+		
+		return firstFiveIncomes;
 	}
 	
 	public Receita find(Integer id) {

@@ -8,9 +8,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaDespesa;
@@ -19,6 +16,7 @@ import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.DespesaDebitoDinheiroRepository;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.DataIntegrityException;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.ObjetoNaoEncontradoException;
+import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
 @Service
 public class DespesaDebitoDinheiroService {
@@ -27,8 +25,6 @@ public class DespesaDebitoDinheiroService {
 	
 	@Autowired
 	private CategoriaDespesaService categoriaDespesaService;
-	
-	private Pageable fiveMostRecent = PageRequest.of(0, 5, Sort.by("data").descending());
 	
 	public Hashtable<String, List<DespesaDTO>> findDebitExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
 		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = new Hashtable<String, List<DespesaDTO>>();
@@ -46,7 +42,11 @@ public class DespesaDebitoDinheiroService {
 	}
 	
 	public List<DespesaDTO> findRecentExpensesDebitCash() {
-		List<DespesaDebitoDinheiro> list = repo.findAll(this.fiveMostRecent).getContent();
+		Date startDate = DefaultPeriodOfSearch.setStartOfPeriod();
+		Date endDate = DefaultPeriodOfSearch.setEndOfPeriod();
+		
+		List<DespesaDebitoDinheiro> list = repo.findAllByDataBetween(startDate, endDate);
+		
 		return list.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
 	}
 	
