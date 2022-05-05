@@ -60,6 +60,25 @@ public class ReceitaService {
 			totalIncomesByCategory.put(key, sumIncomesByCategory);
 		}
 		return totalIncomesByCategory;
+		
+	}
+	
+	public Hashtable<String, Object> calculateSumIncomesByPeriod(Date timeStart, Date timeEnd){
+		float sumIncomesByPeriod = 0;
+		Hashtable<String, Object> totalIncomesByPeriod = new Hashtable<String, Object>();
+		
+		Hashtable<String, Object> totalIncomesByCategory = this.calculateSumIncomesByCategoryAndByPeriod(timeStart, timeEnd);
+		
+		Set<String> setOfKeys = totalIncomesByCategory.keySet();
+		
+		for (String key : setOfKeys) {
+			float actualValue = (float) totalIncomesByCategory.get(key);
+			sumIncomesByPeriod = sumIncomesByPeriod + actualValue;
+		}
+		
+		totalIncomesByPeriod.put("Total", sumIncomesByPeriod);
+		
+		return totalIncomesByPeriod;
 	}
 	 
 	public List<ReceitaDTO> findRecentIncomes() {
