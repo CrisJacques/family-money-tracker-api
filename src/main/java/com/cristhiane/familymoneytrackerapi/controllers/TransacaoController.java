@@ -19,7 +19,7 @@ public class TransacaoController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<?>> findRecentTransactions() {
-		List<?> list = service.listRecentTransactions();
+		List<?> list = service.findRecentTransactions();
 		return ResponseEntity.ok().body(list);
 	}
 

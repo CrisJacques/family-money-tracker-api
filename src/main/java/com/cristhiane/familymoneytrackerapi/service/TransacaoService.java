@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -121,6 +122,24 @@ public class TransacaoService {
 		List<DespesaDTO> firstFiveExpenses = listRecentExpenses.stream().limit(5).collect(Collectors.toList()); // retorna as 5 despesas mais recentes
 		
 		return firstFiveExpenses;
+	}
+	
+	public Hashtable<String, Object> calculateSumExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+		Hashtable<String, Object> totalExpensesByCategory = new Hashtable<String, Object>();
+
+		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = this.findExpensesByCategoryAndByPeriod(timeStart, timeEnd);
+
+		Set<String> setOfKeys = despesasPorCategoria.keySet();
+
+		for (String key : setOfKeys) {
+			float sumExpensesByCategory = 0;
+			List<DespesaDTO> listaDespesas = despesasPorCategoria.get(key);
+			for (DespesaDTO despesa : listaDespesas) {
+				sumExpensesByCategory = sumExpensesByCategory + despesa.getValor();
+			}
+			totalExpensesByCategory.put(key, sumExpensesByCategory);
+		}
+		return totalExpensesByCategory;
 	}
 
 }
