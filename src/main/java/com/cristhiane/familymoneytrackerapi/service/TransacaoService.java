@@ -138,7 +138,7 @@ public class TransacaoService {
 			for (DespesaDTO despesa : listaDespesas) {
 				sumExpensesByCategory = sumExpensesByCategory + despesa.getValor();
 			}
-			totalExpensesByCategory.put(key, sumExpensesByCategory);
+			totalExpensesByCategory.put(key, Precision.round(sumExpensesByCategory, 2));
 		}
 		return totalExpensesByCategory;
 	}
@@ -156,7 +156,7 @@ public class TransacaoService {
 			sumExpensesByPeriod = sumExpensesByPeriod + actualValue;
 		}
 		
-		totalExpensesByPeriod.put("Total", sumExpensesByPeriod);
+		totalExpensesByPeriod.put("Total", Precision.round(sumExpensesByPeriod, 2));
 		
 		return totalExpensesByPeriod;
 	}
