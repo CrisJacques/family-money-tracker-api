@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -185,7 +186,7 @@ public class TransacaoService {
 		if (withBalance) {
 			float balance = totalIncomes - totalExpenses;
 
-			totalIncomesAndExpensesByPeriod.put("Saldo", balance);
+			totalIncomesAndExpensesByPeriod.put("Saldo", Precision.round(balance, 2));
 		}
 		return totalIncomesAndExpensesByPeriod;
 

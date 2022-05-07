@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import org.apache.commons.math3.util.Precision;
+
 import com.cristhiane.familymoneytrackerapi.domain.Despesa;
 
 public class DespesaDTO implements Serializable {
@@ -26,7 +28,7 @@ public class DespesaDTO implements Serializable {
 		super();
 		
 		this.id = obj.getId();
-		this.valor = obj.getValor();
+		this.valor = Precision.round(obj.getValor(), 2);
 		this.descricao = obj.getDescricao();
 		this.data = obj.getData();
 		this.stringData = this.data.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));

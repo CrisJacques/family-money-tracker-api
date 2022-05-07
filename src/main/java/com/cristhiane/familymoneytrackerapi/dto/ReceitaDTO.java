@@ -3,6 +3,8 @@ package com.cristhiane.familymoneytrackerapi.dto;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 
+import org.apache.commons.math3.util.Precision;
+
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 
 public class ReceitaDTO implements Serializable {
@@ -24,7 +26,7 @@ public class ReceitaDTO implements Serializable {
 		super();
 		
 		this.id = obj.getId();
-		this.valor = obj.getValor();
+		this.valor = Precision.round(obj.getValor(), 2);
 		this.descricao = obj.getDescricao();
 		this.data = obj.getData().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		this.nomeCategoriaReceita = obj.getCategoriaReceita().getNome();

@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import org.apache.commons.math3.util.Precision;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Transacao implements Serializable {
@@ -34,7 +36,7 @@ public abstract class Transacao implements Serializable {
 			Integer diaLancamentoRecorrente) {
 		super();
 		this.id = id;
-		this.valor = valor;
+		this.valor = Precision.round(valor, 2);
 		this.descricao = descricao;
 		this.data = data;
 		this.recorrente = recorrente;
@@ -54,7 +56,7 @@ public abstract class Transacao implements Serializable {
 	}
 
 	public void setValor(float valor) {
-		this.valor = valor;
+		this.valor = Precision.round(valor, 2);
 	}
 
 	public String getDescricao() {
