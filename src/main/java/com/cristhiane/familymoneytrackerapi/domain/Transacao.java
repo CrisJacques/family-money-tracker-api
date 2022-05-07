@@ -1,7 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -24,8 +22,7 @@ public abstract class Transacao implements Serializable {
 	private Integer id;
 	private float valor;
 	private String descricao;
-	@Temporal(TemporalType.DATE)
-	private Date data;
+	private LocalDate data;
 	private boolean recorrente;
 	private Integer diaLancamentoRecorrente;
 	
@@ -33,7 +30,7 @@ public abstract class Transacao implements Serializable {
 		
 	}
 
-	public Transacao(Integer id, float valor, String descricao, Date data, boolean recorrente,
+	public Transacao(Integer id, float valor, String descricao, LocalDate data, boolean recorrente,
 			Integer diaLancamentoRecorrente) {
 		super();
 		this.id = id;
@@ -68,11 +65,11 @@ public abstract class Transacao implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 

@@ -1,6 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class DespesaDebitoDinheiroService {
 	@Autowired
 	private CategoriaDespesaService categoriaDespesaService;
 	
-	public Hashtable<String, List<DespesaDTO>> findDebitExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+	public Hashtable<String, List<DespesaDTO>> findDebitExpensesByCategoryAndByPeriod(LocalDate timeStart, LocalDate timeEnd) {
 		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = new Hashtable<String, List<DespesaDTO>>();
 		
 		List<CategoriaDespesa> listaCategoriaDespesa = categoriaDespesaService.findAll();
@@ -42,10 +42,10 @@ public class DespesaDebitoDinheiroService {
 	}
 	
 	public List<DespesaDTO> findRecentExpensesDebitCash() {
-		Date startDate = DefaultPeriodOfSearch.setStartOfPeriod();
-		Date endDate = DefaultPeriodOfSearch.setEndOfPeriod();
+		LocalDate startLocalDate = DefaultPeriodOfSearch.setStartOfPeriod();
+		LocalDate endLocalDate = DefaultPeriodOfSearch.setEndOfPeriod();
 		
-		List<DespesaDebitoDinheiro> list = repo.findAllByDataBetween(startDate, endDate);
+		List<DespesaDebitoDinheiro> list = repo.findAllByDataBetween(startLocalDate, endLocalDate);
 		
 		return list.stream().map(obj -> new DespesaDTO(obj)).collect(Collectors.toList());
 	}

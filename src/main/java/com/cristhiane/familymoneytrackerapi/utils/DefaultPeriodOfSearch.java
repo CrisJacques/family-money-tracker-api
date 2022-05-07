@@ -1,46 +1,31 @@
 package com.cristhiane.familymoneytrackerapi.utils;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 
 public abstract class DefaultPeriodOfSearch {
 
-	public static Date setStartOfPeriod() {
-		Date startDate = null;
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date()); // Configurando a data atual no calendar
+	public static LocalDate setStartOfPeriod() {
+		LocalDate today = LocalDate.now();
+		Month month = today.getMonth();
+		int year = today.getYear();
 
-		int month = calendar.get(Calendar.MONTH);
-		int year = calendar.get(Calendar.YEAR);
+		System.out.println(LocalDate.of(year, month, 1));
 		
-		int startDay = 1; // primeiro dia do período será o primeiro dia do mês
-
-		// Data inicial do período de busca
-		calendar.set(year, month, startDay, 0, 0, 0); // Início do período será o primeiro dia do mês atual, à meia-noite
-		startDate = calendar.getTime();
-		System.out.println(startDate);
-		
-		return startDate;
+		return LocalDate.of(year, month, 1); // Início do período será o primeiro dia do mês atual
 	}
 	
-	public static Date setEndOfPeriod() {
-		Date endDate = null;
+	public static LocalDate setEndOfPeriod() {
+		LocalDate today = LocalDate.now();
+		Month month = today.getMonth();
+		int year = today.getYear();
 		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date()); // Configurando a data atual no calendar
+		YearMonth thisYearMonth = YearMonth.of(year, month);
 
-		int month = calendar.get(Calendar.MONTH);
-		int year = calendar.get(Calendar.YEAR);
+		System.out.println(thisYearMonth.atEndOfMonth());
 		
-		int endDay = calendar.getActualMaximum(Calendar.DATE); // último dia do período será o último dia do mês atual
-		
-		// Data final do período de busca
-		calendar.set(year, month, endDay, 23, 59, 59);// Final do período será o último dia do mês atual, às 23:59:59
-		endDate = calendar.getTime(); 
-		System.out.println(endDate);
-		
-		return endDate;
+		return thisYearMonth.atEndOfMonth(); // Final do período será o último dia do mês atual
 		
 	}
 }

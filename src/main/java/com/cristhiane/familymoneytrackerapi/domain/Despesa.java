@@ -1,6 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -27,7 +27,7 @@ public abstract class Despesa extends Transacao {
 		
 	}
 
-	public Despesa(Integer id, float valor, String descricao, Date data, boolean recorrente,
+	public Despesa(Integer id, float valor, String descricao, LocalDate data, boolean recorrente,
 			Integer diaLancamentoRecorrente, FormaDePagamento formaDePagamento, CategoriaDespesa categoriaDespesa, User user) {
 		super(id, valor, descricao, data, recorrente, diaLancamentoRecorrente);
 		this.formaDePagamento = formaDePagamento;

@@ -1,8 +1,8 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class ReceitaService {
 	@Autowired
 	private CategoriaReceitaService categoriaReceitaService;
 	
-	public Hashtable<String, List<ReceitaDTO>> findIncomesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+	public Hashtable<String, List<ReceitaDTO>> findIncomesByCategoryAndByPeriod(LocalDate timeStart, LocalDate timeEnd) {
 		Hashtable<String, List<ReceitaDTO>> receitasPorCategoria = new Hashtable<String, List<ReceitaDTO>>();
 		
 		List<CategoriaReceita> listaCategoriaReceita = categoriaReceitaService.findAll();
@@ -44,7 +44,7 @@ public class ReceitaService {
 		return receitasPorCategoria;
 	}
 
-	public Hashtable<String, Object> calculateSumIncomesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+	public Hashtable<String, Object> calculateSumIncomesByCategoryAndByPeriod(LocalDate timeStart, LocalDate timeEnd) {
 		Hashtable<String, Object> totalIncomesByCategory = new Hashtable<String, Object>();
 
 		Hashtable<String, List<ReceitaDTO>> receitasPorCategoria = this.findIncomesByCategoryAndByPeriod(timeStart, timeEnd);
@@ -63,7 +63,7 @@ public class ReceitaService {
 		
 	}
 	
-	public Hashtable<String, Object> calculateSumIncomesByPeriod(Date timeStart, Date timeEnd){
+	public Hashtable<String, Object> calculateSumIncomesByPeriod(LocalDate timeStart, LocalDate timeEnd){
 		float sumIncomesByPeriod = 0;
 		Hashtable<String, Object> totalIncomesByPeriod = new Hashtable<String, Object>();
 		
@@ -82,10 +82,10 @@ public class ReceitaService {
 	}
 	 
 	public List<ReceitaDTO> findRecentIncomes() {
-		Date startDate = DefaultPeriodOfSearch.setStartOfPeriod();
-		Date endDate = DefaultPeriodOfSearch.setEndOfPeriod();
+		LocalDate startLocalDate = DefaultPeriodOfSearch.setStartOfPeriod();
+		LocalDate endLocalDate = DefaultPeriodOfSearch.setEndOfPeriod();
 		
-		List<Receita> list = repo.findAllByDataBetween(startDate, endDate);
+		List<Receita> list = repo.findAllByDataBetween(startLocalDate, endLocalDate);
 		List<ReceitaDTO> listDTO = list.stream().map(obj -> new ReceitaDTO(obj)).collect(Collectors.toList());
 		
 		Collections.sort(listDTO, new Comparator<ReceitaDTO>() {

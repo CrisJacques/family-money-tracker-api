@@ -1,6 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,7 +23,7 @@ public class DespesaCredito extends Despesa {
 		
 	}
 
-	public DespesaCredito(Integer id, float valor, String descricao, Date data, boolean recorrente,
+	public DespesaCredito(Integer id, float valor, String descricao, LocalDate data, boolean recorrente,
 			Integer diaLancamentoRecorrente, FormaDePagamento formaDePagamento, CategoriaDespesa categoriaDespesa, User user, Integer numeroParcelas, CartaoDeCredito cartaoDeCredito) {
 		super(id, valor, descricao, data, recorrente, diaLancamentoRecorrente, formaDePagamento, categoriaDespesa, user);
 		this.numeroParcelas = numeroParcelas;

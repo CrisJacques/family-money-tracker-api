@@ -1,6 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -27,7 +27,7 @@ public class Receita extends Transacao {
 		
 	}
 	
-	public Receita(Integer id, float valor, String descricao, Date data, boolean recorrente,
+	public Receita(Integer id, float valor, String descricao, LocalDate data, boolean recorrente,
 			Integer diaLancamentoRecorrente, Conta conta, CategoriaReceita categoriaReceita, User user) {
 		super(id, valor, descricao, data, recorrente, diaLancamentoRecorrente);
 		this.conta = conta;

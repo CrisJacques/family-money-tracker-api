@@ -1,6 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,8 +13,8 @@ import com.cristhiane.familymoneytrackerapi.domain.DespesaCredito;
 public interface DespesaCreditoRepository extends JpaRepository<DespesaCredito, Integer> {
 	List<DespesaCredito> findByCategoriaDespesa(CategoriaDespesa categoriaDespesa);
 	
-	List<DespesaCredito> findAllByDataBetween(Date timeStart, Date timeEnd);
+	List<DespesaCredito> findAllByDataBetween(LocalDate timeStart, LocalDate timeEnd);
 	
-	List<DespesaCredito> findByCategoriaDespesaAndDataBetween(CategoriaDespesa categoriaDespesa, Date timeStart, Date timeEnd);
+	List<DespesaCredito> findByCategoriaDespesaAndDataBetween(CategoriaDespesa categoriaDespesa, LocalDate timeStart, LocalDate timeEnd);
 
 }

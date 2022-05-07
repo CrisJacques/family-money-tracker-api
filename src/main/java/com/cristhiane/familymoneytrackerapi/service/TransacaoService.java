@@ -1,9 +1,9 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +50,7 @@ public class TransacaoService {
 	@Autowired
 	DespesaFinanciamentoEmprestimoRepository despesaFinanciamentoEmprestimoRepository;
 	
-	public Hashtable<String, List<DespesaDTO>> findExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+	public Hashtable<String, List<DespesaDTO>> findExpensesByCategoryAndByPeriod(LocalDate timeStart, LocalDate timeEnd) {
 		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = new Hashtable<String, List<DespesaDTO>>();
 		
 		List<CategoriaDespesa> listaCategoriaDespesa = categoriaDespesaService.findAll();
@@ -124,7 +124,7 @@ public class TransacaoService {
 		return firstFiveExpenses;
 	}
 	
-	public Hashtable<String, Object> calculateSumExpensesByCategoryAndByPeriod(Date timeStart, Date timeEnd) {
+	public Hashtable<String, Object> calculateSumExpensesByCategoryAndByPeriod(LocalDate timeStart, LocalDate timeEnd) {
 		Hashtable<String, Object> totalExpensesByCategory = new Hashtable<String, Object>();
 
 		Hashtable<String, List<DespesaDTO>> despesasPorCategoria = this.findExpensesByCategoryAndByPeriod(timeStart, timeEnd);
@@ -142,7 +142,7 @@ public class TransacaoService {
 		return totalExpensesByCategory;
 	}
 	
-	public Hashtable<String, Object> calculateSumExpensesByPeriod(Date timeStart, Date timeEnd){
+	public Hashtable<String, Object> calculateSumExpensesByPeriod(LocalDate timeStart, LocalDate timeEnd){
 		float sumExpensesByPeriod = 0;
 		Hashtable<String, Object> totalExpensesByPeriod = new Hashtable<String, Object>();
 		
@@ -160,7 +160,7 @@ public class TransacaoService {
 		return totalExpensesByPeriod;
 	}
 	
-	public Hashtable<String, Object> calculateSumIncomesAndExpensesByPeriod(Date timeStart, Date timeEnd,
+	public Hashtable<String, Object> calculateSumIncomesAndExpensesByPeriod(LocalDate timeStart, LocalDate timeEnd,
 			boolean withBalance) {
 		float totalIncomes = 0;
 		float totalExpenses = 0;

@@ -1,8 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -32,9 +31,9 @@ public class TransacaoController {
 	@RequestMapping(value = "/total-geral", method = RequestMethod.GET)
 	public ResponseEntity<?> calculateSumExpensesByPeriod(@RequestParam(required = false) String saldo, @RequestParam(required = false) String start,
 			@RequestParam(required = false) String end) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date startDate = null;
-		Date endDate = null;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate startDate = null;
+		LocalDate endDate = null;
 
 		if (start == null) {
 			if (end != null) {
@@ -49,30 +48,12 @@ public class TransacaoController {
 			}
 
 		} else {// Se o início do período foi informado na requisição, é feito o processamento
-				// do início e final do período e tais valores são repassados para o service
-				// responsável pelo somatório de valores de receitas e despesas dentro do
-				// período informado.
-				// Se algo der errado ao fazer o parse dos valores informados na requisição, é
-				// retornado um erro 400, para que o cliente saiba que há algo errado com as
-				// datas informadas.
-			try {
-				startDate = sdf.parse(start);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return ResponseEntity.badRequest().body(
-						"Formato inválido de data de início do período (parâmetro start). O formato esperado é dd/MM/yyyy");
-			}
+				startDate = LocalDate.parse(start, formatter);
 			if (end == null) {
 				return ResponseEntity.badRequest()
 						.body("Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
 			} else {
-				try {
-					endDate = sdf.parse(end);
-				} catch (ParseException e) {
-					e.printStackTrace();
-					return ResponseEntity.badRequest().body(
-							"Formato inválido de data de final do período (parâmetro end). O formato esperado é dd/MM/yyyy");
-				}
+				endDate = LocalDate.parse(end, formatter);
 			}
 		}
 

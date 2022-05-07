@@ -1,6 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 
@@ -19,7 +19,7 @@ public class DespesaFinanciamentoEmprestimo extends Despesa {
 		
 	}
 
-	public DespesaFinanciamentoEmprestimo(Integer id, float valor, String descricao, Date data, boolean recorrente,
+	public DespesaFinanciamentoEmprestimo(Integer id, float valor, String descricao, LocalDate data, boolean recorrente,
 			Integer diaLancamentoRecorrente, FormaDePagamento formaDePagamento, CategoriaDespesa categoriaDespesa, User user, Integer numeroParcelas, Banco banco) {
 		super(id, valor, descricao, data, recorrente, diaLancamentoRecorrente, formaDePagamento, categoriaDespesa, user);
 		this.numeroParcelas = numeroParcelas;
