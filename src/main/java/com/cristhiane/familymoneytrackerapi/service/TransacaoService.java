@@ -1,5 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -163,6 +164,8 @@ public class TransacaoService {
 	
 	public Hashtable<String, Object> calculateSumIncomesAndExpensesByPeriod(LocalDate timeStart, LocalDate timeEnd,
 			boolean withBalance) {
+		DecimalFormat df = new DecimalFormat("0.00");
+		
 		float totalIncomes = 0;
 		float totalExpenses = 0;
 
@@ -186,7 +189,7 @@ public class TransacaoService {
 		if (withBalance) {
 			float balance = totalIncomes - totalExpenses;
 
-			totalIncomesAndExpensesByPeriod.put("Saldo", Precision.round(balance, 2));
+			totalIncomesAndExpensesByPeriod.put("Saldo", df.format(balance));
 		}
 		return totalIncomesAndExpensesByPeriod;
 
