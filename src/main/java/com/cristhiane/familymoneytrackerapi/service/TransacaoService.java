@@ -1,6 +1,7 @@
 package com.cristhiane.familymoneytrackerapi.service;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -165,6 +166,10 @@ public class TransacaoService {
 	public Hashtable<String, Object> calculateSumIncomesAndExpensesByPeriod(LocalDate timeStart, LocalDate timeEnd,
 			boolean withBalance) {
 		DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
+
+	    dfs.setDecimalSeparator('.');
+	    df.setDecimalFormatSymbols(dfs);
 		
 		float totalIncomes = 0;
 		float totalExpenses = 0;
