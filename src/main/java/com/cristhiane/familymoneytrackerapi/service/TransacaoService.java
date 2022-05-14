@@ -97,17 +97,6 @@ public class TransacaoService {
 		return listExpensesDTO;
 	}
 	
-	public List<?> findRecentTransactions() {
-		List<ReceitaDTO> listRecentIncomes = receitaService.findRecentIncomes();
-		List<DespesaDTO> listRecentExpensesDebitCash = despesaDebitoDinheiroService.findRecentExpensesDebitCash();
-		List<DespesaDTO> listRecentExpensesCredit = despesaCreditoService.findRecentExpensesCredit();
-		List<DespesaDTO> listRecentExpensesFinancingLoan = despesaFinanciamentoEmprestimoService.findRecentExpensesFinancingLoan();
-		
-		List<?> listRecentTransactions = Stream.concat(Stream.concat(Stream.concat(listRecentIncomes.stream(), listRecentExpensesDebitCash.stream()), listRecentExpensesCredit.stream()),listRecentExpensesFinancingLoan.stream()).collect(Collectors.toList());
-		
-		return listRecentTransactions;
-	}
-	
 	public List<DespesaDTO> findRecentExpenses() {
 		
 		List<DespesaDTO> listRecentExpensesDebitCash = despesaDebitoDinheiroService.findRecentExpensesDebitCash();
