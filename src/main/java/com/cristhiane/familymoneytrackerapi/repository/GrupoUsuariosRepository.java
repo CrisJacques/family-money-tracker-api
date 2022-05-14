@@ -5,8 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import com.cristhiane.familymoneytrackerapi.domain.GrupoUsuarios;
 
+/**
+ * Repository que encapsula as interações com o banco de dados para a entidade
+ * Grupo de Usuários
+ *
+ */
 @Repository
 public interface GrupoUsuariosRepository extends JpaRepository<GrupoUsuarios, Integer> {
 
 }
-

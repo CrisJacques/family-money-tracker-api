@@ -9,13 +9,18 @@ import org.springframework.stereotype.Repository;
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 
-
+/**
+ * Repository que encapsula as interações com o banco de dados para a entidade
+ * Receita
+ *
+ */
 @Repository
 public interface ReceitaRepository extends JpaRepository<Receita, Integer> {
 	List<Receita> findByCategoriaReceita(CategoriaReceita categoriaReceita);
-	
+
 	List<Receita> findAllByDataBetween(LocalDate timeStart, LocalDate timeEnd);
-	
-	List<Receita> findByCategoriaReceitaAndDataBetween(CategoriaReceita categoriaReceita, LocalDate timeStart, LocalDate timeEnd);
+
+	List<Receita> findByCategoriaReceitaAndDataBetween(CategoriaReceita categoriaReceita, LocalDate timeStart,
+			LocalDate timeEnd);
 
 }

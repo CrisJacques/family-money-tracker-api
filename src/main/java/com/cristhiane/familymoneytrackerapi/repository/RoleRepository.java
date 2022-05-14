@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 import com.cristhiane.familymoneytrackerapi.domain.Role;
 import com.cristhiane.familymoneytrackerapi.enums.TipoUsuario;
 
+/**
+ * Repository que encapsula as interações com o banco de dados para a entidade
+ * Role (Perfis de usuário)
+ *
+ */
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 	Optional<Role> findByName(TipoUsuario name);
