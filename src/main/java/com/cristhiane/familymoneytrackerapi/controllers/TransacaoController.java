@@ -3,7 +3,6 @@ package com.cristhiane.familymoneytrackerapi.controllers;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Hashtable;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,22 +14,33 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cristhiane.familymoneytrackerapi.service.TransacaoService;
 import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
+/**
+ * Controller responsável pelas requisições relacionadas a transações (despesas
+ * e receitas de uma forma geral)
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/transacoes")
 public class TransacaoController {
-	
+
 	@Autowired
 	TransacaoService service;
-	
-	@RequestMapping(value = "/recentes",method = RequestMethod.GET)
-	public ResponseEntity<List<?>> findRecentTransactions() {
-		List<?> list = service.findRecentTransactions();
-		return ResponseEntity.ok().body(list);
-	}
-	
+
+	/**
+	 * Lista o valor total de despesas e receitas para um período dado pelos
+	 * parâmetros start e end. Se start e end não forem informados, o período
+	 * buscado será todo o mês atual
+	 * 
+	 * @param saldo - Se valor for true, retorna também o saldo resultante (receitas
+	 *              - despesas)
+	 * @param start - Início do período a ser buscado
+	 * @param end   - Final do período a ser buscado
+	 * @return Valor total de despesas e receitas para um dado período, com o saldo
+	 *         junto se for solicitado
+	 */
 	@RequestMapping(value = "/total-geral", method = RequestMethod.GET)
-	public ResponseEntity<?> calculateSumExpensesByPeriod(@RequestParam(required = false) String saldo, @RequestParam(required = false) String start,
-			@RequestParam(required = false) String end) {
+	public ResponseEntity<?> calculateSumExpensesByPeriod(@RequestParam(required = false) String saldo,
+			@RequestParam(required = false) String start, @RequestParam(required = false) String end) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate startDate = null;
 		LocalDate endDate = null;
@@ -48,7 +58,7 @@ public class TransacaoController {
 			}
 
 		} else {// Se o início do período foi informado na requisição, é feito o processamento
-				startDate = LocalDate.parse(start, formatter);
+			startDate = LocalDate.parse(start, formatter);
 			if (end == null) {
 				return ResponseEntity.badRequest()
 						.body("Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
@@ -57,21 +67,20 @@ public class TransacaoController {
 			}
 		}
 
-		if(saldo == null) {
+		if (saldo == null) {
 			Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate, false);
 			return ResponseEntity.ok().body(obj);
-		}else if(saldo.equals("true")) {
+		} else if (saldo.equals("true")) {
 			Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate, true);
 			return ResponseEntity.ok().body(obj);
-		}else if (saldo.equals("false")) {
+		} else if (saldo.equals("false")) {
 			Hashtable<String, Object> obj = service.calculateSumIncomesAndExpensesByPeriod(startDate, endDate, false);
 			return ResponseEntity.ok().body(obj);
-		}else {
-			return ResponseEntity.badRequest().body(
-					"O parâmetro saldo apenas aceita true ou false como valores válidos");
+		} else {
+			return ResponseEntity.badRequest()
+					.body("O parâmetro saldo apenas aceita true ou false como valores válidos");
 		}
 
-		
 	}
 
 }

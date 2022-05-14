@@ -25,36 +25,46 @@ import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
 import com.cristhiane.familymoneytrackerapi.security.jwt.JwtUtils;
 import com.cristhiane.familymoneytrackerapi.security.services.UserDetailsImpl;
 
+/**
+ * Controller responsável pela autenticação
+ *
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
+
 	@Autowired
 	UserRepository userRepository;
+
 	@Autowired
 	RoleRepository roleRepository;
+
 	@Autowired
 	PasswordEncoder encoder;
+
 	@Autowired
 	JwtUtils jwtUtils;
+
+	/**
+	 * Faz o login
+	 * 
+	 * @param loginRequest - Objeto que contém as informações de email e senha
+	 * @return Informações do usuário logado, caso o login ocorra com sucesso
+	 */
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())); 
+				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
-		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
-												 userDetails.getUsername(), 
-												 userDetails.getEmail(),
-												 roles,
-												 userDetails.getGrupoUsuarios()));
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+				userDetails.getEmail(), roles, userDetails.getGrupoUsuarios()));
 	}
 }

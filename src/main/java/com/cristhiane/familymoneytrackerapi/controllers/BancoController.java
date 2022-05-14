@@ -10,17 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cristhiane.familymoneytrackerapi.service.BancoService;
 
+/**
+ * Controller responsável pelas requisições relacionadas a bancos
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/bancos")
 public class BancoController {
 
 	@Autowired
 	BancoService bancoService;
-	
-	@RequestMapping(method=RequestMethod.GET)
+
+	/**
+	 * Busca por todos os bancos cadastrados
+	 * 
+	 * @return Lista de bancos cadastrados
+	 */
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findAll() {
 		Hashtable<Integer, Object> list = bancoService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 }
-

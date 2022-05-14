@@ -22,6 +22,10 @@ import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.service.ReceitaService;
 import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
+/**
+ * Controller responsável pelas requisições relacionadas a receitas
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/receitas")
 public class ReceitaController {
@@ -29,6 +33,23 @@ public class ReceitaController {
 	@Autowired
 	ReceitaService service;
 	
+	/**
+	 * Busca por receitas cadastradas de acordo com filtros passados por parâmetro.
+	 * Se nenhum filtro for passado, retorna todas as receitas cadastradas
+	 * 
+	 * @param recentes      - Se valor for true, retorna as 5 receitas mais recentes
+	 *                      do mês atual
+	 * @param por_categoria - Se valor for true, retorna uma lista de receitas por
+	 *                      categoria no período informado pelos parâmetros start e
+	 *                      end. Se start e end não forem informados, o período a
+	 *                      ser buscado será todo o mês atual
+	 * @param start         - Início do período a ser buscado (só é levado em conta
+	 *                      se o parâmetro por_categoria for true)
+	 * @param end           - Final do período a ser buscado (só é levado em conta
+	 *                      se o parâmetro por_categoria for true)
+	 * @return Lista de receitas de acordo com os filtros configurados ou todas as
+	 *         receitas caso nenhum filtro seja configurado
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findIncomes(@RequestParam(defaultValue = "false") String recentes,
 			@RequestParam(defaultValue = "false") String por_categoria, @RequestParam(required = false) String start,
@@ -88,6 +109,15 @@ public class ReceitaController {
 		}
 	}
 	
+	/**
+	 * Lista o valor total de receitas por categoria dentro de um período informado
+	 * pelos parâmetros start e end. Se start e end não forem informados, o período
+	 * a ser buscado será todo o mês atual
+	 * 
+	 * @param start - Início do período dentro do qual as receitas serão somadas
+	 * @param end   - Final do período dentro do qual as receitas serão somadas
+	 * @return Somatório de receitas por categoria
+	 */
 	@RequestMapping(value = "/total-por-categoria", method = RequestMethod.GET)
 	public ResponseEntity<?> calculateSumIncomesByCategoryAndByPeriod(@RequestParam(required = false) String start,
 			@RequestParam(required = false) String end) {
@@ -122,6 +152,15 @@ public class ReceitaController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	/**
+	 * Retorna o somatório total de receitas (incluindo todas as categorias) dentro
+	 * de um período especificado pelos parâmetros start e end. Se start e end não
+	 * forem informados, o período a ser buscado será todo o mês atual
+	 * 
+	 * @param start - Início do período dentro do qual as receitas serão somadas
+	 * @param end   - Final do período dentro do qual as receitas serão somadas
+	 * @return Somatório total de receitas
+	 */
 	@RequestMapping(value = "/total-geral", method = RequestMethod.GET)
 	public ResponseEntity<?> calculateSumIncomesByPeriod(@RequestParam(required = false) String start,
 			@RequestParam(required = false) String end) {
@@ -156,6 +195,12 @@ public class ReceitaController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	/**
+	 * Busca por uma receita cujo id é passado por parâmetro
+	 * 
+	 * @param id - Id da receita
+	 * @return Informações da receita solicitada
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id){
 		Receita obj = service.find(id);
@@ -163,6 +208,13 @@ public class ReceitaController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	/**
+	 * Insere uma receita
+	 * 
+	 * @param obj - Corpo da requisição
+	 * @return Caso inserção ocorra com sucesso, retorna a uri do recurso recém
+	 *         criado no cabeçalho da resposta
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody Receita obj){
 		obj = service.insert(obj);
@@ -171,6 +223,14 @@ public class ReceitaController {
 		return ResponseEntity.created(uri).build();// retorna status code 201 e no cabeçalho da resposta informa a uri do recurso recém criado
 	}
 	
+	/**
+	 * Atualiza as informações de uma receita
+	 * 
+	 * @param obj - Corpo da requisição
+	 * @param id  - Id da receita que deve ser atualizada
+	 * @return Status code 204 se atualização ocorreu com sucesso (sem corpo na
+	 *         resposta)
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody Receita obj, @PathVariable Integer id){
 		obj.setId(id);
@@ -179,6 +239,13 @@ public class ReceitaController {
 		return ResponseEntity.noContent().build();// retorna status code 204
 	}
 	
+	/**
+	 * Remove uma receita
+	 * 
+	 * @param id - Id da receita que deve ser removida
+	 * @return Status code 204 se remoção ocorreu com sucesso (sem corpo na
+	 *         resposta)
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

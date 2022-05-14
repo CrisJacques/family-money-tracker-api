@@ -17,13 +17,35 @@ import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
 import com.cristhiane.familymoneytrackerapi.service.TransacaoService;
 import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
+/**
+ * Controller responsável pelas requisições relacionadas a despesas (de uma
+ * forma geral, sem levar em conta a forma de pagamento)
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/despesas")
 public class DespesaController {
-	
+
 	@Autowired
 	TransacaoService service;
-	
+
+	/**
+	 * Busca por despesas cadastradas de acordo com filtros passados por parâmetro.
+	 * Se nenhum filtro for passado, retorna todas as despesas cadastradas
+	 * 
+	 * @param recentes      - Se valor for true, retorna as 5 despesas mais recentes
+	 *                      do mês atual
+	 * @param por_categoria - Se valor for true, retorna uma lista de despesas por
+	 *                      categoria no período informado pelos parâmetros start e
+	 *                      end. Se start e end não forem informados, o período a
+	 *                      ser buscado será todo o mês atual
+	 * @param start         - Início do período a ser buscado (só é levado em conta
+	 *                      se o parâmetro por_categoria for true)
+	 * @param end           - Final do período a ser buscado (só é levado em conta
+	 *                      se o parâmetro por_categoria for true)
+	 * @return Lista de despesas de acordo com os filtros configurados ou todas as
+	 *         despesas caso nenhum filtro seja configurado
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findIncomes(@RequestParam(defaultValue = "false") String recentes,
 			@RequestParam(defaultValue = "false") String por_categoria, @RequestParam(required = false) String start,
@@ -49,28 +71,29 @@ public class DespesaController {
 					if (end != null) {
 						return ResponseEntity.badRequest().body(
 								"Se o parâmetro start não foi informado, o parâmetro end também não deve ser informado.");
-					}else {
+					} else {
 						// Se o período não foi informado na requisição, é feita uma lógica
 						// para configurar o período de busca como sendo todo o mês atual (do dia 1 até
 						// o último dia do mês)
 						startDate = DefaultPeriodOfSearch.setStartOfPeriod();
 						endDate = DefaultPeriodOfSearch.setEndOfPeriod();
-					}			
-					
+					}
+
 				} else {// Se o início do período foi informado na requisição, é feito o processamento
-						startDate = LocalDate.parse(start, formatter);
+					startDate = LocalDate.parse(start, formatter);
 					if (end == null) {
-						return ResponseEntity.badRequest().body(
-								"Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
-					}else {
+						return ResponseEntity.badRequest()
+								.body("Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
+					} else {
 						endDate = LocalDate.parse(end, formatter);
-					}	
+					}
 				}
 				// Chamando o service responsável por retornar a lista de despesas por
 				// categoria, passando as datas de início e final vindas da requisição, ou os
 				// valores configurados segundo a lógica acima caso o período de busca não seja
 				// informado na requisição
-				Hashtable<String, List<DespesaDTO>> despesasPorCategoria = service.findExpensesByCategoryAndByPeriod(startDate, endDate);
+				Hashtable<String, List<DespesaDTO>> despesasPorCategoria = service
+						.findExpensesByCategoryAndByPeriod(startDate, endDate);
 				return ResponseEntity.ok().body(despesasPorCategoria);
 			} else {// Se o fluxo cair aqui significa que os parâmetros "recentes" e/ou
 					// "por_categoria" receberam valores diferentes de true ou false na requisição,
@@ -81,8 +104,16 @@ public class DespesaController {
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * Lista o valor total de despesas por categoria dentro de um período informado
+	 * pelos parâmetros start e end. Se start e end não forem informados, o período
+	 * a ser buscado será todo o mês atual
+	 * 
+	 * @param start - Início do período dentro do qual as despesas serão somadas
+	 * @param end   - Final do período dentro do qual as despesas serão somadas
+	 * @return Somatório de despesas por categoria
+	 */
 	@RequestMapping(value = "/total-por-categoria", method = RequestMethod.GET)
 	public ResponseEntity<?> calculateSumExpensesByCategoryAndByPeriod(@RequestParam(required = false) String start,
 			@RequestParam(required = false) String end) {
@@ -103,7 +134,7 @@ public class DespesaController {
 			}
 
 		} else {// Se o início do período foi informado na requisição, é feito o processamento
-				startDate = LocalDate.parse(start, formatter);
+			startDate = LocalDate.parse(start, formatter);
 			if (end == null) {
 				return ResponseEntity.badRequest()
 						.body("Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
@@ -116,7 +147,16 @@ public class DespesaController {
 
 		return ResponseEntity.ok().body(obj);
 	}
-	
+
+	/**
+	 * Retorna o somatório total de despesas (incluindo todas as categorias) dentro
+	 * de um período especificado pelos parâmetros start e end. Se start e end não
+	 * forem informados, o período a ser buscado será todo o mês atual
+	 * 
+	 * @param start - Início do período dentro do qual as despesas serão somadas
+	 * @param end   - Final do período dentro do qual as despesas serão somadas
+	 * @return Somatório total de despesas
+	 */
 	@RequestMapping(value = "/total-geral", method = RequestMethod.GET)
 	public ResponseEntity<?> calculateSumExpensesByPeriod(@RequestParam(required = false) String start,
 			@RequestParam(required = false) String end) {
@@ -137,7 +177,7 @@ public class DespesaController {
 			}
 
 		} else {// Se o início do período foi informado na requisição, é feito o processamento
-				startDate = LocalDate.parse(start, formatter);
+			startDate = LocalDate.parse(start, formatter);
 			if (end == null) {
 				return ResponseEntity.badRequest()
 						.body("Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
