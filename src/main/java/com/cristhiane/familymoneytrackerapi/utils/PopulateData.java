@@ -85,7 +85,8 @@ public class PopulateData {
 	/**
 	 * Insere dados no banco de dados para testes e demonstrações do sistema
 	 */
-	@PostConstruct
+	//Descomentar a linha abaixo caso queira que os dados de teste sejam populados ao subir a aplicação
+	//@PostConstruct
 	public void insertData() {
 		// Inserindo grupo de usuários
 		GrupoUsuarios aGrandeFamilia = new GrupoUsuarios(null, "A Grande Família", "aGrandeFamilia");
