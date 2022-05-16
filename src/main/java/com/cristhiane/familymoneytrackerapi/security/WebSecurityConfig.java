@@ -1,7 +1,6 @@
 package com.cristhiane.familymoneytrackerapi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import com.cristhiane.familymoneytrackerapi.security.jwt.AuthEntryPointJwt;
 import com.cristhiane.familymoneytrackerapi.security.jwt.AuthTokenFilter;
 import com.cristhiane.familymoneytrackerapi.security.services.UserDetailsServiceImpl;
@@ -30,8 +30,9 @@ import com.cristhiane.familymoneytrackerapi.security.services.UserDetailsService
 		prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${spring.h2.console.path}")
-	private String h2ConsolePath;
+	//Descomentar linhas abaixo se for usar banco H2
+	//@Value("${spring.h2.console.path}")
+	//private String h2ConsolePath;
 
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -61,10 +62,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// Descomentar trecho abaixo se for usar banco H2
+		/*
+		 * http.cors().and().csrf().disable().exceptionHandling().
+		 * authenticationEntryPoint(unauthorizedHandler).and()
+		 * .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
+		 * and().authorizeRequests()
+		 * .antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").
+		 * permitAll() .antMatchers(h2ConsolePath +
+		 * "/**").permitAll().anyRequest().authenticated();
+		 */
+		
+		// Comentar linha abaixo se for usar banco H2
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").permitAll()
-				.antMatchers(h2ConsolePath + "/**").permitAll().anyRequest().authenticated();
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+		.antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").permitAll().anyRequest().authenticated();
 
 		// fix H2 database console: Refused to display ' in a frame because it set
 		// 'X-Frame-Options' to 'deny'
