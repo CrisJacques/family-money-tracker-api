@@ -75,9 +75,14 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 $ git clone https://github.com/CrisJacques/family-money-tracker-api.git
 
 ```
-2. Abra a pasta raiz no *Spring Tool Suite*
-3. Clique com o botão direito sobre o projeto e selecione *Run As > Spring Boot App*
+2. Crie um banco de dados MySQL de nome *familymoneytracker*. Abaixo, um exemplo de como fazer isso no *MySQL Workbench*:
+![image](https://user-images.githubusercontent.com/66973973/168701525-489499c2-1254-4e5e-892e-b3a741f19901.png)
+
+3. Abra a pasta raiz do projeto no *Spring Tool Suite*
+4. Descomente a linha que possui o @PostConstruct (linha 89 do arquivo *PopulateData.java*) e salve para que o banco de dados seja populado com dados de teste
+5. Clique com o botão direito sobre o projeto e selecione *Run As > Spring Boot App*
 ![image](https://user-images.githubusercontent.com/66973973/168493988-0ad4eb91-0432-4b5b-8891-5ec0caa01440.png)
+6. Comente novamente a linha que contém o @PostConstruct no *PopulateData.java* e salve para evitar que o banco seja populado com dados repetidos toda vez que subir a aplicação.
 
 ---
 
