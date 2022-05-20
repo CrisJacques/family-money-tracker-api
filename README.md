@@ -66,7 +66,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 - [Git](https://git-scm.com)
 - [Java 11](https://www.oracle.com/java/technologies/downloads/#java11)
 - [Spring Tool Suite](https://spring.io/tools)
-- [Banco MySQL](https://dev.mysql.com/downloads/mysql/)
+- [Banco PostgreSQL](https://www.postgresql.org/)
 
 #### 🎲 Rodando a API
 
@@ -75,13 +75,13 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 $ git clone https://github.com/CrisJacques/family-money-tracker-api.git
 
 ```
-2. Crie um banco de dados MySQL de nome *familymoneytracker*. Abaixo, um exemplo de como fazer isso no *MySQL Workbench*:
-![image](https://user-images.githubusercontent.com/66973973/168701525-489499c2-1254-4e5e-892e-b3a741f19901.png)
+2. Crie um banco de dados PostgreSQL de nome *family-money-tracker*. Abaixo, um exemplo de como fazer isso no *pgAdmin 4*:
+![image](https://user-images.githubusercontent.com/66973973/169429573-9f55d57a-4694-4842-9d19-9bd9a1f8aa4f.png)
 
 3. Abra a pasta raiz do projeto no *Spring Tool Suite*
 4. Descomente a linha que possui o @PostConstruct (linha 89 do arquivo *PopulateData.java*) e salve para que o banco de dados seja populado com dados de teste
-5. Insira o usuário e senha de conexão com o seu MySQL no arquivo *application.properties* e salve:
-![image](https://user-images.githubusercontent.com/66973973/168703016-3ac8d5f2-8aaf-41d5-a813-d1eeb93e374e.png)
+5. Insira o usuário e senha de conexão com o seu PostgreSQL no arquivo *application.properties* e salve:
+![image](https://user-images.githubusercontent.com/66973973/169429688-9479d01b-e16b-4bb4-9604-e4dcbaeda2a5.png)
 
 6. Clique com o botão direito sobre o projeto e selecione *Run As > Spring Boot App*
 ![image](https://user-images.githubusercontent.com/66973973/168493988-0ad4eb91-0432-4b5b-8891-5ec0caa01440.png)
