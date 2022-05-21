@@ -12,15 +12,15 @@ public class FamilyMoneyTrackerApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FamilyMoneyTrackerApiApplication.class, args);
 	}
-	
+
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-	            .allowedOrigins("http://localhost:8081")
-	            .allowedMethods("GET", "POST", "PUT", "DELETE");
+				registry.addMapping("/**").allowedOrigins("http://localhost:3000")
+						.allowedOrigins("https://family-money-tracker-web.herokuapp.com/")
+						.allowedMethods("GET", "POST", "PUT", "DELETE");
 			}
 		};
 	}
