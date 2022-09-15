@@ -101,6 +101,46 @@ public class TransacaoService {
 	}
 
 	/**
+	 * Busca por todas as despesas cuja data pertence ao período solicitado
+	 * 
+	 * @param timeStart - Data inicial do período a ser buscado
+	 * @param timeEnd   - Data final do período a ser buscado
+	 * @return Lista de todas as despesas pertencentes ao período solicitado
+	 *         contendo apenas as informações essenciais (DTOs), ordenadas do
+	 *         registro mais recente para o mais antigo
+	 */
+	public List<DespesaDTO> findExpensesByPeriod(LocalDate timeStart, LocalDate timeEnd) {
+
+		List<DespesaDebitoDinheiro> listExpensesDebit = despesaDebitoDinheiroRepository.findAllByDataBetween(timeStart,
+				timeEnd);
+		List<DespesaDTO> listExpensesDebitDTO = listExpensesDebit.stream().map(obj -> new DespesaDTO(obj))
+				.collect(Collectors.toList());
+
+		List<DespesaCredito> listExpensesCredit = despesaCreditoRepository.findAllByDataBetween(timeStart, timeEnd);
+		List<DespesaDTO> listExpensesCreditDTO = listExpensesCredit.stream().map(obj -> new DespesaDTO(obj))
+				.collect(Collectors.toList());
+
+		List<DespesaFinanciamentoEmprestimo> listExpensesFinancing = despesaFinanciamentoEmprestimoRepository
+				.findAllByDataBetween(timeStart, timeEnd);
+		List<DespesaDTO> listExpensesFinancingDTO = listExpensesFinancing.stream().map(obj -> new DespesaDTO(obj))
+				.collect(Collectors.toList());
+
+		List<DespesaDTO> despesasDoPeriodoOrdenadas = Stream
+				.concat(Stream.concat(listExpensesDebitDTO.stream(), listExpensesCreditDTO.stream()),
+						listExpensesFinancingDTO.stream())
+				.collect(Collectors.toList());
+
+		Collections.sort(despesasDoPeriodoOrdenadas, new Comparator<DespesaDTO>() {
+			public int compare(DespesaDTO one, DespesaDTO other) {
+				return other.getData().compareTo(one.getData()); // fazendo dessa forma os registros são ordenados do
+																	// mais recente para o mais antigo
+			}
+		});
+
+		return despesasDoPeriodoOrdenadas;
+	}
+
+	/**
 	 * Busca por todas as despesas cadastradas, contemplando todas as formas de
 	 * pagamento
 	 * 

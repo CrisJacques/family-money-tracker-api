@@ -39,18 +39,51 @@ public class DespesaController {
 	 *                      categoria no período informado pelos parâmetros start e
 	 *                      end. Se start e end não forem informados, o período a
 	 *                      ser buscado será todo o mês atual
-	 * @param start         - Início do período a ser buscado (só é levado em conta
-	 *                      se o parâmetro por_categoria for true)
-	 * @param end           - Final do período a ser buscado (só é levado em conta
-	 *                      se o parâmetro por_categoria for true)
+	 * @param por_periodo   - Se valor for true, retorna todas as depesas dentro do
+	 *                      período informado pelos parâmetros start e end. Se start
+	 *                      e end não forem informados, o período a ser buscado será
+	 *                      todo o mês atual
+	 * @param start         - Início do período a ser buscado
+	 * @param end           - Final do período a ser buscado
 	 * @return Lista de despesas de acordo com os filtros configurados ou todas as
 	 *         despesas caso nenhum filtro seja configurado
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findIncomes(@RequestParam(defaultValue = "false") String recentes,
 			@RequestParam(defaultValue = "false") String por_categoria, @RequestParam(required = false) String start,
-			@RequestParam(required = false) String end) {
+			@RequestParam(required = false) String end, @RequestParam(defaultValue = "false") String por_periodo) {
 		List<DespesaDTO> listaDespesas = new ArrayList<>();
+
+		// Listando despesas de um período selecionado pelo usuário
+		if (por_periodo.equals("true")) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate startDate = null;
+			LocalDate endDate = null;
+
+			if (start == null) {
+				if (end != null) {
+					return ResponseEntity.badRequest().body(
+							"Se o parâmetro start não foi informado, o parâmetro end também não deve ser informado.");
+				} else {
+					// Se o período não foi informado na requisição, é feita uma lógica
+					// para configurar o período de busca como sendo todo o mês atual (do dia 1 até
+					// o último dia do mês)
+					startDate = DefaultPeriodOfSearch.setStartOfPeriod();
+					endDate = DefaultPeriodOfSearch.setEndOfPeriod();
+				}
+
+			} else {// Se o início do período foi informado na requisição, é feito o processamento
+				startDate = LocalDate.parse(start, formatter);
+				if (end == null) {
+					return ResponseEntity.badRequest()
+							.body("Se o parâmetro start foi informado, o parâmetro end também deve ser informado.");
+				} else {
+					endDate = LocalDate.parse(end, formatter);
+				}
+			}
+			listaDespesas = service.findExpensesByPeriod(startDate, endDate);
+			return ResponseEntity.ok().body(listaDespesas);
+		}
 
 		if (recentes.equals("true") && por_categoria.equals("true")) {
 			return ResponseEntity.badRequest().body(
