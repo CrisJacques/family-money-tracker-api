@@ -8,13 +8,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.cristhiane.familymoneytrackerapi.domain.CategoriaReceita;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaCredito;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaDebitoDinheiro;
+import com.cristhiane.familymoneytrackerapi.domain.DespesaFinanciamentoEmprestimo;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
+import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
 import com.cristhiane.familymoneytrackerapi.dto.ReceitaDTO;
 import com.cristhiane.familymoneytrackerapi.repository.ReceitaRepository;
 import com.cristhiane.familymoneytrackerapi.service.exceptions.DataIntegrityException;
@@ -57,6 +62,31 @@ public class ReceitaService {
 
 		}
 		return receitasPorCategoria;
+	}
+	
+	/**
+	 * Busca por todas as receitas cuja data pertence ao período solicitado
+	 * 
+	 * @param timeStart - Data inicial do período a ser buscado
+	 * @param timeEnd   - Data final do período a ser buscado
+	 * @return Lista de todas as receitas pertencentes ao período solicitado
+	 *         contendo apenas as informações essenciais (DTOs), ordenadas do
+	 *         registro mais recente para o mais antigo
+	 */
+	public List<ReceitaDTO> findIncomesByPeriod(LocalDate timeStart, LocalDate timeEnd) {
+
+		List<Receita> listIncomes = repo.findAllByDataBetween(timeStart, timeEnd);
+		List<ReceitaDTO> listIncomesDTO = listIncomes.stream().map(obj -> new ReceitaDTO(obj))
+				.collect(Collectors.toList());
+
+		Collections.sort(listIncomesDTO, new Comparator<ReceitaDTO>() {
+			public int compare(ReceitaDTO one, ReceitaDTO other) {
+				return other.getData().compareTo(one.getData()); // fazendo dessa forma os registros são ordenados do
+																	// mais recente para o mais antigo
+			}
+		});
+
+		return listIncomesDTO;
 	}
 
 	/**
