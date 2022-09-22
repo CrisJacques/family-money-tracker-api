@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.math3.util.Precision;
 
+import com.cristhiane.familymoneytrackerapi.domain.Conta;
 import com.cristhiane.familymoneytrackerapi.domain.Receita;
 
 /**
@@ -21,6 +22,7 @@ public class ReceitaDTO implements Serializable {
 	private String data;
 	private String nomeCategoriaReceita;
 	private String tipo;
+	private Conta conta;
 
 	/**
 	 * Construtor vazio
@@ -44,6 +46,7 @@ public class ReceitaDTO implements Serializable {
 		this.data = obj.getData().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		this.nomeCategoriaReceita = obj.getCategoriaReceita().getNome();
 		this.tipo = "Receita";
+		this.conta = obj.getConta();
 	}
 
 	/**
@@ -152,6 +155,24 @@ public class ReceitaDTO implements Serializable {
 	 */
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	/**
+	 * Getter do parâmetro conta
+	 * 
+	 * @return Conta vinculada à receita
+	 */
+	public Conta getConta() {
+		return conta;
+	}
+
+	/**
+	 * Setter do parâmetro conta
+	 * 
+	 * @param conta - Conta vinculada à receita
+	 */
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
 
 }

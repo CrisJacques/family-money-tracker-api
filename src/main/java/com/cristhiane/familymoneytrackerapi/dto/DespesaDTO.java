@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.math3.util.Precision;
 
 import com.cristhiane.familymoneytrackerapi.domain.Despesa;
+import com.cristhiane.familymoneytrackerapi.enums.FormaDePagamento;
 
 /**
  * Classe que constrói um DTO (Data Transfer Object) para as despesas
@@ -23,6 +24,7 @@ public class DespesaDTO implements Serializable {
 	private String stringData;
 	private String nomeCategoriaDespesa;
 	private String tipo;
+	private FormaDePagamento formaDePagamento;
 
 	/**
 	 * Construtor vazio
@@ -47,6 +49,7 @@ public class DespesaDTO implements Serializable {
 		this.stringData = this.data.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		this.nomeCategoriaDespesa = obj.getCategoriaDespesa().getNome();
 		this.tipo = "Despesa";
+		this.formaDePagamento = obj.getFormaDePagamento();
 	}
 
 	/**
@@ -173,6 +176,24 @@ public class DespesaDTO implements Serializable {
 	 */
 	public void setStringData(String stringData) {
 		this.stringData = stringData;
+	}
+	
+	/**
+	 * Getter do parâmetro formaDePagamento
+	 * 
+	 * @return Forma de pagamento da despesa
+	 */
+	public FormaDePagamento getFormaDePagamento() {
+		return formaDePagamento;
+	}
+
+	/**
+	 * Setter do parâmetro formaDePagamento
+	 * 
+	 * @param formaDePagamento - Forma de pagamento da despesa
+	 */
+	public void setFormaDePagamento(FormaDePagamento formaDePagamento) {
+		this.formaDePagamento = formaDePagamento;
 	}
 
 }
