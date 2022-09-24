@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.math3.util.Precision;
 
 import com.cristhiane.familymoneytrackerapi.domain.Despesa;
-import com.cristhiane.familymoneytrackerapi.enums.FormaDePagamento;
 
 /**
  * Classe que constrói um DTO (Data Transfer Object) para as despesas
@@ -24,7 +23,9 @@ public class DespesaDTO implements Serializable {
 	private String stringData;
 	private String nomeCategoriaDespesa;
 	private String tipo;
-	private FormaDePagamento formaDePagamento;
+	private String formaDePagamentoDesc;
+	private String formaDePagamentoName;
+	
 
 	/**
 	 * Construtor vazio
@@ -49,7 +50,8 @@ public class DespesaDTO implements Serializable {
 		this.stringData = this.data.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		this.nomeCategoriaDespesa = obj.getCategoriaDespesa().getNome();
 		this.tipo = "Despesa";
-		this.formaDePagamento = obj.getFormaDePagamento();
+		this.formaDePagamentoDesc = obj.getFormaDePagamento().getDescricao();
+		this.formaDePagamentoName = obj.getFormaDePagamento().name();
 	}
 
 	/**
@@ -179,21 +181,41 @@ public class DespesaDTO implements Serializable {
 	}
 	
 	/**
-	 * Getter do parâmetro formaDePagamento
+	 * Getter do parâmetro formaDePagamentoDesc
 	 * 
-	 * @return Forma de pagamento da despesa
+	 * @return Descrição da forma de pagamento da despesa
 	 */
-	public FormaDePagamento getFormaDePagamento() {
-		return formaDePagamento;
+	public String getFormaDePagamentoDesc() {
+		return formaDePagamentoDesc;
 	}
 
 	/**
-	 * Setter do parâmetro formaDePagamento
+	 * Setter do parâmetro formaDePagamentoDesc
 	 * 
-	 * @param formaDePagamento - Forma de pagamento da despesa
+	 * @param formaDePagamentoDesc - Descrição da forma de pagamento da despesa
 	 */
-	public void setFormaDePagamento(FormaDePagamento formaDePagamento) {
-		this.formaDePagamento = formaDePagamento;
+	public void setFormaDePagamentoDesc(String formaDePagamentoDesc) {
+		this.formaDePagamentoDesc = formaDePagamentoDesc;
 	}
+	
+	/**
+	 * Getter do parâmetro formaDePagamentoName
+	 * 
+	 * @return Nome da forma de pagamento da despesa
+	 */
+	public String getFormaDePagamentoName() {
+		return formaDePagamentoName;
+	}
+
+	
+	/**
+	 * Setter do parâmetro formaDePagamentoName
+	 * 
+	 * @param formaDePagamentoName - Nome da forma de pagamento da despesa
+	 */
+	public void setFormaDePagamentoName(String formaDePagamentoName) {
+		this.formaDePagamentoName = formaDePagamentoName;
+	}
+
 
 }

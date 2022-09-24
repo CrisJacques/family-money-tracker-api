@@ -8,12 +8,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristhiane.familymoneytrackerapi.dto.DespesaDTO;
+import com.cristhiane.familymoneytrackerapi.service.DespesaCreditoService;
+import com.cristhiane.familymoneytrackerapi.service.DespesaDebitoDinheiroService;
+import com.cristhiane.familymoneytrackerapi.service.DespesaFinanciamentoEmprestimoService;
 import com.cristhiane.familymoneytrackerapi.service.TransacaoService;
 import com.cristhiane.familymoneytrackerapi.utils.DefaultPeriodOfSearch;
 
@@ -28,6 +32,15 @@ public class DespesaController {
 
 	@Autowired
 	TransacaoService service;
+	
+	@Autowired
+	DespesaDebitoDinheiroService despesaDebitoDinheiroService;
+	
+	@Autowired
+	DespesaCreditoService despesaCreditoService;
+	
+	@Autowired
+	DespesaFinanciamentoEmprestimoService despesaFinanciamentoEmprestimoService;
 
 	/**
 	 * Busca por despesas cadastradas de acordo com filtros passados por parâmetro.
@@ -223,4 +236,44 @@ public class DespesaController {
 
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	/**
+	 * Remove uma despesa
+	 * 
+	 * @param id - Id da despesa que deve ser removida
+	 * @param forma_pagamento - Forma de pagamento da despesa que deve ser removida
+	 * @return Status code 204 se remoção ocorreu com sucesso (sem corpo na
+	 *         resposta)
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@PathVariable Integer id, @RequestParam(required = true) String forma_pagamento) {
+		try {
+			switch (forma_pagamento) {
+			case "DINHEIRO":
+				despesaDebitoDinheiroService.delete(id);
+				break;
+			case "DEBITO":
+				despesaDebitoDinheiroService.delete(id);
+				break;
+			case "CARTAO_DE_CREDITO":
+				despesaCreditoService.delete(id);
+				break;
+			case "FINANCIAMENTO":
+				despesaFinanciamentoEmprestimoService.delete(id);
+				break;
+			case "EMPRESTIMO":
+				despesaFinanciamentoEmprestimoService.delete(id);
+				break;
+			default:
+				return ResponseEntity.badRequest()
+						.body("Forma de pagamento inválida.");
+			}
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Despesa cujo id foi informado não pertence à forma de pagamento informada ou despesa não existe");
+		}
+		
+		return ResponseEntity.noContent().build();// retorna status code 204
+		
+	}
+
 }
