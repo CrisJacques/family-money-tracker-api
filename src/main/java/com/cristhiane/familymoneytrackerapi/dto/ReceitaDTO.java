@@ -21,6 +21,7 @@ public class ReceitaDTO implements Serializable {
 	private String descricao;
 	private String data;
 	private String nomeCategoriaReceita;
+	private Integer idCategoriaReceita;
 	private String tipo;
 	private Conta conta;
 
@@ -45,6 +46,7 @@ public class ReceitaDTO implements Serializable {
 		this.descricao = obj.getDescricao();
 		this.data = obj.getData().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		this.nomeCategoriaReceita = obj.getCategoriaReceita().getNome();
+		this.idCategoriaReceita = obj.getCategoriaReceita().getId();
 		this.tipo = "Receita";
 		this.conta = obj.getConta();
 	}
@@ -173,6 +175,24 @@ public class ReceitaDTO implements Serializable {
 	 */
 	public void setConta(Conta conta) {
 		this.conta = conta;
+	}
+
+	/**
+	 * Getter do parâmetro idCategoriaReceita
+	 * 
+	 * @return Id numérico da categoria da receita
+	 */
+	public Integer getIdCategoriaReceita() {
+		return idCategoriaReceita;
+	}
+
+	/**
+	 * Setter do parâmetro idCategoriaReceita
+	 * 
+	 * @param idCategoriaReceita - Id numérico da categoria da receita
+	 */
+	public void setIdCategoriaReceita(Integer idCategoriaReceita) {
+		this.idCategoriaReceita = idCategoriaReceita;
 	}
 
 }
