@@ -22,10 +22,11 @@ public class DespesaDTO implements Serializable {
 	private LocalDate data;
 	private String stringData;
 	private String nomeCategoriaDespesa;
+	private Integer idCategoriaDespesa;
 	private String tipo;
 	private String formaDePagamentoDesc;
 	private String formaDePagamentoName;
-	
+	private Integer idFormaDePagamento;
 
 	/**
 	 * Construtor vazio
@@ -49,9 +50,11 @@ public class DespesaDTO implements Serializable {
 		this.data = obj.getData();
 		this.stringData = this.data.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		this.nomeCategoriaDespesa = obj.getCategoriaDespesa().getNome();
+		this.idCategoriaDespesa = obj.getCategoriaDespesa().getId();
 		this.tipo = "Despesa";
 		this.formaDePagamentoDesc = obj.getFormaDePagamento().getDescricao();
 		this.formaDePagamentoName = obj.getFormaDePagamento().name();
+		this.idFormaDePagamento = obj.getFormaDePagamento().getCod();
 	}
 
 	/**
@@ -179,7 +182,7 @@ public class DespesaDTO implements Serializable {
 	public void setStringData(String stringData) {
 		this.stringData = stringData;
 	}
-	
+
 	/**
 	 * Getter do parâmetro formaDePagamentoDesc
 	 * 
@@ -197,7 +200,7 @@ public class DespesaDTO implements Serializable {
 	public void setFormaDePagamentoDesc(String formaDePagamentoDesc) {
 		this.formaDePagamentoDesc = formaDePagamentoDesc;
 	}
-	
+
 	/**
 	 * Getter do parâmetro formaDePagamentoName
 	 * 
@@ -207,7 +210,6 @@ public class DespesaDTO implements Serializable {
 		return formaDePagamentoName;
 	}
 
-	
 	/**
 	 * Setter do parâmetro formaDePagamentoName
 	 * 
@@ -217,5 +219,40 @@ public class DespesaDTO implements Serializable {
 		this.formaDePagamentoName = formaDePagamentoName;
 	}
 
+	/**
+	 * Getter do parâmetro idCategoriaDespesa
+	 * 
+	 * @return Id numérico da categoria da despesa
+	 */
+	public Integer getIdCategoriaDespesa() {
+		return idCategoriaDespesa;
+	}
+
+	/**
+	 * Setter do parâmetro idCategoriaDespesa
+	 * 
+	 * @param idCategoriaDespesa - Id numérico da categoria da despesa
+	 */
+	public void setIdCategoriaDespesa(Integer idCategoriaDespesa) {
+		this.idCategoriaDespesa = idCategoriaDespesa;
+	}
+
+	/**
+	 * Getter do parâmetro idFormaDePagamento
+	 * 
+	 * @return Id numérico da forma de pagamento da despesa
+	 */
+	public Integer getIdFormaDePagamento() {
+		return idFormaDePagamento;
+	}
+
+	/**
+	 * Setter do parâmetro idFormaDePagamento
+	 * 
+	 * @param idFormaDePagamento - Id numérico da forma de pagamento da despesa
+	 */
+	public void setIdFormaDePagamento(Integer idFormaDePagamento) {
+		this.idFormaDePagamento = idFormaDePagamento;
+	}
 
 }
