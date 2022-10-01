@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Comentar linha abaixo se for usar banco H2
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-		.antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").permitAll().antMatchers("/api/usuarios/**").permitAll().anyRequest().authenticated();
+		.antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").permitAll().antMatchers("/api/usuarios/**").permitAll().antMatchers("/api/grupos-usuarios/**").permitAll().anyRequest().authenticated();
 
 		// fix H2 database console: Refused to display ' in a frame because it set
 		// 'X-Frame-Options' to 'deny'
