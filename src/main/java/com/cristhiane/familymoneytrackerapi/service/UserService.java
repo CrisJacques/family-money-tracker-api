@@ -3,6 +3,7 @@ package com.cristhiane.familymoneytrackerapi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cristhiane.familymoneytrackerapi.domain.User;
@@ -16,6 +17,9 @@ import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
 public class UserService {
 	@Autowired
 	UserRepository repo;
+	
+	@Autowired
+	PasswordEncoder encoder;
 
 	/**
 	 * Cadastra um usuário
@@ -26,6 +30,7 @@ public class UserService {
 	public User insert(User obj) {
 		obj.setId(null); // garantindo que o id do objeto seja nulo para que ele seja inserido no banco
 		// de dados
+		obj.setPassword(encoder.encode(obj.getPassword()));// é preciso rodar o encode no password antes de salvar no banco de dados
 		return repo.save(obj);
 	}
 

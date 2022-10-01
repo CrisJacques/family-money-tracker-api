@@ -42,8 +42,7 @@ public class UserController {
 																														// recém
 																														// criado
 
-		return ResponseEntity.created(uri).build();// retorna status code 201 e no cabeçalho da resposta informa a uri
-													// do recurso recém criado
+		return ResponseEntity.created(uri).body(obj);// Retorna o usuário recém criado no corpo da resposta
 	}
 
 	/**
