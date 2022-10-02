@@ -28,21 +28,30 @@ public class UserController {
 	 * Insere um usuário
 	 * 
 	 * @param obj - Corpo da requisição
-	 * @return Caso inserção ocorra com sucesso, retorna a uri do recurso recém
-	 *         criado no cabeçalho da resposta
+	 * @return Caso inserção ocorra com sucesso, retorna o usuário recém criado no corpo da resposta
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@RequestBody User obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();// criando
-																														// URI
-																														// para
-																														// o
-																														// recurso
-																														// recém
-																														// criado
+		if (service.checkIfEmailAlreadyExists(obj.getEmail()) || service.checkIfNameAlreadyExists(obj.getUsername())) {
+			if (service.checkIfEmailAlreadyExists(obj.getEmail())) {
+				return ResponseEntity.badRequest().build();
+			} else {
+				return ResponseEntity.badRequest().build();
+			}
+		} else {
+			obj = service.insert(obj);
+			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId())
+					.toUri();// criando
+								// URI
+								// para
+								// o
+								// recurso
+								// recém
+								// criado
 
-		return ResponseEntity.created(uri).body(obj);// Retorna o usuário recém criado no corpo da resposta
+			return ResponseEntity.created(uri).body(obj);// Retorna o usuário recém criado no corpo da resposta
+		}
+
 	}
 
 	/**

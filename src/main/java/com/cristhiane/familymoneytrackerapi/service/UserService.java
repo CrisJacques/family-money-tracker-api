@@ -17,7 +17,7 @@ import com.cristhiane.familymoneytrackerapi.repository.UserRepository;
 public class UserService {
 	@Autowired
 	UserRepository repo;
-	
+
 	@Autowired
 	PasswordEncoder encoder;
 
@@ -30,8 +30,29 @@ public class UserService {
 	public User insert(User obj) {
 		obj.setId(null); // garantindo que o id do objeto seja nulo para que ele seja inserido no banco
 		// de dados
-		obj.setPassword(encoder.encode(obj.getPassword()));// é preciso rodar o encode no password antes de salvar no banco de dados
+		obj.setPassword(encoder.encode(obj.getPassword()));// é preciso rodar o encode no password antes de salvar no
+															// banco de dados
 		return repo.save(obj);
+	}
+
+	/**
+	 * Verifica se o nome de usuário já existe no banco de dados
+	 * 
+	 * @param username - Nome de usuário a ser buscado no banco de dados
+	 * @return true se usuário já existe no banco de dados e false caso contrário
+	 */
+	public Boolean checkIfNameAlreadyExists(String username) {
+		return repo.existsByUsername(username);
+	}
+
+	/**
+	 * Verifica se o email do usuário já existe no banco de dados
+	 * 
+	 * @param email - Email a ser buscado no banco de dados
+	 * @return true se email já existe no banco de dados e false caso contrário
+	 */
+	public Boolean checkIfEmailAlreadyExists(String email) {
+		return repo.existsByEmail(email);
 	}
 
 	/**
