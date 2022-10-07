@@ -18,7 +18,7 @@ public class FamilyMoneyTrackerApiApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("https://family-money-tracker-web-v2.herokuapp.com/")
+				registry.addMapping("/**").allowedOrigins("http://family-money-tracker-web-v2.herokuapp.com/")
 						.allowedMethods("GET", "POST", "PUT", "DELETE");
 			}
 		};
